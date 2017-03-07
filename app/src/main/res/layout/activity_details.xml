@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jsusm_text="http://schemas.android.com/apk/res/com.ums.umslife"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/base_common_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_180_dip"
+                android:scaleType="centerCrop"
+                android:src="@drawable/activity_theme" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <TextView
+                    android:id="@+id/activity_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/ll_sign"
+                    android:singleLine="true"
+                    android:text="南京银商春季马拉松"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/club_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/activity_name_tv"
+                    android:layout_toLeftOf="@+id/ll_sign"
+                    android:singleLine="true"
+                    android:text="俱乐部"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv_apply"
+                        style="@style/tv_submit_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/to_participate"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_to_sign"
+                        style="@style/tv_submit_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/to_sign_in"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_12_dip"
+                    android:layout_height="@dimen/dimen_12_dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/time" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_10_dip"
+                    android:text="活动开始时间"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/signStartTime_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_5_dip"
+                    android:text="2017-11-11 11:11"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_12_dip"
+                    android:layout_height="@dimen/dimen_12_dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/time2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_10_dip"
+                    android:text="活动结束时间"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/signEndTime_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_5_dip"
+                    android:text="2017-11-11 11:11"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_12_dip"
+                    android:layout_height="@dimen/dimen_12_dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/adress" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_10_dip"
+                    android:text="位置"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/address_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_5_dip"
+                    android:text="资本大厦"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_12_dip"
+                    android:layout_height="@dimen/dimen_12_dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/integral" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_10_dip"
+                    android:text="活动积分"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/integral_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_5_dip"
+                    android:text="55"
+                    android:textColor="@color/red_main"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_12_dip"
+                    android:layout_height="@dimen/dimen_12_dip"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/member" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_10_dip"
+                    android:text="已报名"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/member_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_5_dip"
+                    android:text="1"
+                    android:textColor="@color/green_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="报名截止时间：" />
+
+                <TextView
+                    android:id="@+id/endTime_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_5_dip"
+                    android:text="2017-11-11 11:11"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="活动内容" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <TextView
+                    android:id="@+id/content_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:maxLines="5"
+                    android:text="友谊第一比赛第二友谊第一比赛第二友谊第一比赛第二友谊第一比赛第二友谊第一比赛第二友谊第一比赛第二友谊第一比赛第二"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="活动群体" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line" />
+
+            <RelativeLayout
+                android:id="@+id/club_member_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/dimen_10_dip" >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/club_iv"
+                    android:layout_width="@dimen/dimen_58_dip"
+                    android:layout_height="@dimen/dimen_58_dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dimen_10_dip"
+                    android:src="@drawable/test_club_im"
+                    jsusm_text:border_color="@color/white"
+                    jsusm_text:border_width="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/club_iv"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/club_tv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="俱乐部" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="简介"
+                        android:textColor="@color/gray_txt"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_go_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/im_go_right" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

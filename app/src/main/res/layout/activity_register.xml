@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jsums="http://schemas.android.com/apk/res/com.ums.umslife"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/base_common_title" />
+
+    <com.ums.umslife.view.LabelTextView
+        android:id="@+id/register_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        jsums:left_text="手机号："
+        jsums:right_hint="请输入手机号码" >
+    </com.ums.umslife.view.LabelTextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal" >
+
+        <com.ums.umslife.view.LabelTextView
+            android:id="@+id/ltv_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            jsums:left_text="@string/label_password"
+            jsums:right_hint="输入验证码" >
+        </com.ums.umslife.view.LabelTextView>
+
+        <Button
+            android:id="@+id/bt_send_auth_code"
+            style="@style/bt_submit_style"
+            android:layout_width="91dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bt_count_down_bg_selector"
+            android:layout_marginRight="10dp"
+            android:text="@string/send_auth_code" />
+    </LinearLayout>
+
+    <com.ums.umslife.view.LabelTextView
+        android:id="@+id/register_set_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        jsums:left_text="操作密码："
+        jsums:right_hint="请输入6位以上字母或者数字" >
+    </com.ums.umslife.view.LabelTextView>
+
+    <com.ums.umslife.view.LabelTextView
+        android:id="@+id/register_password_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        jsums:left_text="再次输入："
+        jsums:right_hint="请再输一次密码，两次密码相同" >
+    </com.ums.umslife.view.LabelTextView>
+
+    <Button
+        android:clickable="true"
+        style="@style/bt_submit_style"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="63dp"
+        android:text="@string/to_register" />
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_activity_top_month_report_bg_height">250.0px</dimen>
+    <dimen name="main_activity_middle_report_row_list_height">280.0px</dimen>
+    <dimen name="main_activity_month_expense_ly_marginTop">11.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_width">85.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_height">85.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_marginTop">583.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_marginLeft">374.0px</dimen>
+    <dimen name="report_activity_date_range_btn_width">54.0px</dimen>
+    <dimen name="report_activity_date_range_btn_height">72.0px</dimen>
+    <dimen name="batteryView_layout_width">115.0px</dimen>
+    <dimen name="batteryView_layout_height">205.0px</dimen>
+    <dimen name="batteryView_layout_marginTop">20.0px</dimen>
+    <dimen name="batteryView_layout_marginLeft">0.0px</dimen>
+    <dimen name="batteryView_layout_marginRight">46.0px</dimen>
+    <dimen name="batteryView_contentWidth">92.0px</dimen>
+    <dimen name="batteryView_contentHeight">183.0px</dimen>
+    <dimen name="batteryView_contentPaddingLeft">11.0px</dimen>
+    <dimen name="batteryView_contentPaddingTop">11.0px</dimen>
+    <dimen name="piechartView_layout_width">480.0px</dimen>
+    <dimen name="piechartView_layout_height">718.0px</dimen>
+</resources>

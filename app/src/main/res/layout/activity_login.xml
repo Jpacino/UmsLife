@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jsums="http://schemas.android.com/apk/res/com.ums.umslife"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_170_dip" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/s_logo" />
+    </RelativeLayout>
+
+    <com.ums.umslife.view.LabelTextView
+        android:id="@+id/ltv_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        jsums:left_text="@string/label_accounts"
+        jsums:right_hint="@string/label_please_input_phone" >
+    </com.ums.umslife.view.LabelTextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/dimen_10_dip"
+        android:layout_marginRight="@dimen/dimen_10_dip"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5_dip"
+        android:background="@android:color/white"
+        android:orientation="horizontal" >
+
+        <com.ums.umslife.view.LabelTextView
+            android:id="@+id/ltv_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            jsums:left_text="@string/label_password"
+            jsums:right_hint="@string/label_please_input_pwd" >
+        </com.ums.umslife.view.LabelTextView>
+
+        <Button
+            android:id="@+id/bt_send_auth_code"
+            style="@style/bt_submit_style"
+            android:layout_width="@dimen/dimen_60_dip"
+            android:layout_height="@dimen/dimen_30_dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dimen_10_dip"
+            android:background="@drawable/bt_count_down_bg_selector"
+            android:text="@string/send_auth_code"
+            android:textSize="@dimen/dimen_10_dip"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/dimen_10_dip"
+        android:layout_marginRight="@dimen/dimen_10_dip"
+        android:background="@color/line" />
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/bt_submit_style"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:text="@string/to_login" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp" >
+
+        <LinearLayout
+            android:id="@+id/ll_auto_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/iv_auto_login"
+                android:layout_width="@dimen/dimen_30_dip"
+                android:layout_height="@dimen/dimen_13_dip"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:src="@drawable/not_choose" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_login" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_login_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:text="@string/message_login" >
+        </TextView>
+    </RelativeLayout>
+
+</LinearLayout>

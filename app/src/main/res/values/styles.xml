@@ -1,0 +1,64 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+
+
+        -->
+    </style>
+    <style name="FistPageRadio">
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:width">0dp</item>
+        <item name="android:textColor">@color/first_page_title_selector</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="bt_submit_style">
+        <item name="android:background">@drawable/bt_submit_bg_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="tv_submit_style">
+        <item name="android:background">@drawable/bt_submit_bg_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:paddingRight">@dimen/dimen_15_dip</item>
+        <item name="android:paddingLeft">@dimen/dimen_15_dip</item>
+        <item name="android:paddingTop">@dimen/dimen_5_dip</item>
+        <item name="android:paddingBottom">@dimen/dimen_5_dip</item>
+    </style>
+
+    <style name="tv_join_style">
+        <item name="android:background">@drawable/tv_join_shape</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingRight">@dimen/dimen_3_dip</item>
+        <item name="android:paddingLeft">@dimen/dimen_3_dip</item>
+    </style>
+    <!-- ProgressDialog Style -->
+    <style name="succinct_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="succinctProgressDialog" parent="@style/succinct_dialog">
+        <item name="android:windowBackground">@drawable/shape_succinct_dialog</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

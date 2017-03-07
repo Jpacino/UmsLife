@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/main_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10_dip" >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/mine_login_portrait"
+            android:layout_width="@dimen/dimen_58_dip"
+            android:layout_height="@dimen/dimen_58_dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_15_dip"
+            android:src="@drawable/test_club_im" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/apply_state_tv"
+            android:layout_toRightOf="@id/mine_login_portrait"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/club_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="俱乐部名称"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_3_dip" >
+
+                <TextView
+                    android:id="@+id/synopsis_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="简介"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_3_dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成员"
+                    android:textColor="@color/gray_txt"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/member_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="55"
+                    android:textColor="@color/green_color"
+                    android:textSize="@dimen/dimen_12_dip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/apply_state_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_5_dip"
+            android:text="未加入"
+            android:textColor="@color/red_txt"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@id/main_rl"
+        android:background="@color/line" />
+
+</RelativeLayout>

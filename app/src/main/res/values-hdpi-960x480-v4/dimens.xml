@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_activity_top_month_report_bg_height">304.0px</dimen>
+    <dimen name="main_activity_middle_report_row_list_height">324.0px</dimen>
+    <dimen name="main_activity_month_expense_ly_marginTop">9.0px</dimen>
+    <dimen name="batteryView_layout_width">138.0px</dimen>
+    <dimen name="batteryView_layout_height">250.0px</dimen>
+    <dimen name="batteryView_layout_marginTop">22.0px</dimen>
+    <dimen name="batteryView_layout_marginRight">26.0px</dimen>
+    <dimen name="batteryView_contentWidth">110.0px</dimen>
+    <dimen name="batteryView_contentHeight">222.0px</dimen>
+    <dimen name="batteryView_contentPaddingLeft">14.0px</dimen>
+    <dimen name="batteryView_contentPaddingTop">14.0px</dimen>
+    <dimen name="dimen_h_400">800.0px</dimen>
+    <dimen name="dimen_h_45">90.0px</dimen>
+    <dimen name="dimen_h_28">56.0px</dimen>
+    <dimen name="dimen_h_3">6.0px</dimen>
+    <dimen name="dimen_h_102">204.0px</dimen>
+    <dimen name="dimen_h_32">64.0px</dimen>
+    <dimen name="dimen_h_20">40.0px</dimen>
+    <dimen name="dimen_h_2">4.0px</dimen>
+    <dimen name="dimen_h_5">10.0px</dimen>
+    <dimen name="dimen_h_80">160.0px</dimen>
+    <dimen name="dimen_h_37">74.0px</dimen>
+    <dimen name="dimen_h_4">8.0px</dimen>
+    <dimen name="dimen_h_395">790.0px</dimen>
+    <dimen name="dimen_h_343">686.0px</dimen>
+</resources>

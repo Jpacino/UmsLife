@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="piechartView_totalLableTextSize">30</integer>
+    <integer name="piechartView_amountLabelTextSize">35</integer>
+    <integer name="piechartView_categoryOfSectorLabelTextSize">30</integer>
+    <integer name="piechartView_displayOfSectorLabelTextSize">28</integer>
+    <integer name="piechartView_pieCircleRadius">352</integer>
+    <integer name="piechartView_pieCircleMarginTop">122</integer>
+    <integer name="piechartView_totalLabelDrawInY">440</integer>
+    <integer name="piechartView_categoryOfSectorLabelDrawInY">940</integer>
+    <integer name="piechartView_displayOfSectorDrawInY">980</integer>
+    <integer name="piechartView_indicationCenterInX">670</integer>
+    <integer name="piechartView_indicationCenterInY">960</integer>
+    <integer name="piechartView_indicationCircleRadius">10</integer>
+</resources>

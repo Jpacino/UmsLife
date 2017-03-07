@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_activity_top_month_report_bg_height">140.0px</dimen>
+    <dimen name="main_activity_middle_report_row_list_height">125.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_width">55.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_height">55.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_marginTop">220.0px</dimen>
+    <dimen name="report_activity_go_trans_list_btn_marginLeft">165.0px</dimen>
+    <dimen name="batteryView_layout_width">57.0px</dimen>
+    <dimen name="batteryView_layout_height">115.0px</dimen>
+    <dimen name="batteryView_layout_marginTop">1.0dip</dimen>
+    <dimen name="batteryView_layout_marginLeft">0.0dip</dimen>
+    <dimen name="batteryView_layout_marginRight">10.0dip</dimen>
+    <dimen name="batteryView_contentWidth">46.0px</dimen>
+    <dimen name="batteryView_contentHeight">106.0px</dimen>
+    <dimen name="batteryView_contentPaddingLeft">5.0px</dimen>
+    <dimen name="batteryView_contentPaddingTop">5.0px</dimen>
+    <dimen name="piechartView_layout_width">240.0px</dimen>
+    <dimen name="piechartView_layout_height">280.0px</dimen>
+    <dimen name="dimen_h_400">333.32812px</dimen>
+    <dimen name="dimen_h_45">37.5px</dimen>
+    <dimen name="dimen_h_28">23.333313px</dimen>
+    <dimen name="dimen_h_3">2.5px</dimen>
+    <dimen name="dimen_h_102">85.0px</dimen>
+    <dimen name="dimen_h_32">26.666656px</dimen>
+    <dimen name="dimen_h_20">16.666656px</dimen>
+    <dimen name="dimen_h_2">1.6666565px</dimen>
+    <dimen name="dimen_h_5">4.1666565px</dimen>
+    <dimen name="dimen_h_80">66.66666px</dimen>
+    <dimen name="dimen_h_37">30.833313px</dimen>
+    <dimen name="dimen_h_4">3.333313px</dimen>
+    <dimen name="dimen_h_395">329.16406px</dimen>
+    <dimen name="dimen_h_343">285.82812px</dimen>
+</resources>

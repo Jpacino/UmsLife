@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/ll_first_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/main_ll"/>
+
+    <LinearLayout
+        android:id="@id/main_ll"
+        android:layout_gravity="end"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/line"/>
+
+        <RadioGroup
+            android:id="@+id/rg_first_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dimen_5_dip" >
+
+            <RadioButton
+                style="@style/FistPageRadio"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/main_activity_selector"
+                android:text="@string/first_activity" />
+
+            <RadioButton
+                style="@style/FistPageRadio"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/main_club_selector"
+                android:text="@string/first_club" />
+
+            <RadioButton
+                style="@style/FistPageRadio"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/main_me_selector"
+                android:text="@string/first_mine_info" />
+        </RadioGroup>
+    </LinearLayout>
+
+</RelativeLayout>
