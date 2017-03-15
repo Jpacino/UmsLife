@@ -16,6 +16,7 @@ public class HttpUtils {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(OkHttpUtil.getOkHttpClient())
+//                    .client(getOkHttpClient())
                     .build();
             httpService =retrofit.create(HttpService.class);
         }

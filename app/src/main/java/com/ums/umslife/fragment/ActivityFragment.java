@@ -26,6 +26,7 @@ import com.ums.umslife.utils.MyUtils;
 import com.ums.umslife.view.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,19 +37,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityFragment extends BaseFragment implements
-        OnRefreshListener2<ListView> {
-
+        OnRefreshListener2<ListView>,OnBannerListener {
+    private static final String PIC_BASE_URL = "http://172.16.87.212:8080/control/picture/";
     private PullToRefreshListView activityLv;
     private TextView emptyTv;
     private Context mContext;
     private ActivityBean activityBean;
     private ActivityListAdapter adapter;
+    private Banner banner;
     private List<String> imgs = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
-    private List<ActivityBean.ActivitysBean> activityLists = new ArrayList<>();
+    private List<ActivityBean.DataBean.AllActivityListBean> activityLists = new ArrayList<>();
+    private List<ActivityBean.DataBean.HotActivityListBean> hotActLists = new ArrayList<>();
     public static final int MIN_CLICK_DELAY_TIME = 1000;
     private long lastClickTime = 0;
-    private Banner banner;
 
     @Override
     protected int getContentLayoutRes() {
@@ -68,10 +70,10 @@ public class ActivityFragment extends BaseFragment implements
         titleTv.setText("活动");
         activityLv = (PullToRefreshListView) childView
                 .findViewById(R.id.lv_activity_list);
-        View headView = LayoutInflater.from(mContext).inflate(R.layout.act_headview, null);
+        View headView = LayoutInflater.from(mContext).inflate(R.layout.act_headview,null);
         banner = (Banner) headView.findViewById(R.id.act_banner);
-        initBanner();
-
+//        initBanner();
+        banner.setOnBannerListener(this);
         activityLv.getRefreshableView().addHeaderView(headView);
         emptyTv = (TextView) childView.findViewById(R.id.empty_tv);
         activityLv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
@@ -84,9 +86,12 @@ public class ActivityFragment extends BaseFragment implements
 
     private void initBanner() {
         banner.setImageLoader(new GlideImageLoader());
-        for (int i = 0; i < 5; i++) {
-            imgs.add("http://pic1.sc.chinaz.com/files/pic/pic9/201702/zzpic1504.jpg");
-            titles.add("标题"+i);
+        imgs.clear();
+        titles.clear();
+        for (int i = 0; i < hotActLists.size(); i++) {
+            imgs.add(PIC_BASE_URL+hotActLists.get(i).getPicURL());
+            Log.d(MyAppConfig.TAG, "initBanner: "+imgs.get(i));
+            titles.add(activityLists.get(i).getActivityTheme());
         }
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         banner.setBannerTitles(titles);
@@ -111,7 +116,10 @@ public class ActivityFragment extends BaseFragment implements
                             switch (activityBean.getCode()) {
                                 case MyAppConfig.SUCCESS_CODE:
                                     activityLists.clear();
-                                    activityLists.addAll(activityBean.getData());
+                                    hotActLists.clear();
+                                    hotActLists.addAll(activityBean.getData().getHotActivityList());
+                                    activityLists.addAll(activityBean.getData().getAllActivityList());
+                                    initBanner();
                                     // Toast.makeText(getActivity(), "已刷新",
                                     // Toast.LENGTH_SHORT).show();
                                     break;
@@ -173,8 +181,7 @@ public class ActivityFragment extends BaseFragment implements
                 Intent actDetailIt = new Intent(mContext,
                         ActivityDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("activitysBean", activityBean.getData()
-                        .get(position - 1));
+                bundle.putSerializable("activitysBean", activityBean.getData().getAllActivityList().get(position - 2));
                 actDetailIt.putExtras(bundle);
                 startActivity(actDetailIt);
             }
@@ -191,4 +198,8 @@ public class ActivityFragment extends BaseFragment implements
     public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
     }
 
+    @Override
+    public void OnBannerClick(int position) {
+        MyUtils.showToast(mContext,"点击了"+position);
+    }
 }

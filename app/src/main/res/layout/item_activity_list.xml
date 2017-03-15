@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/tv_activity_joinState"
-            android:singleLine="true"
+            android:lines="1"
             android:text="南京银商春季马拉松"
             android:textSize="16sp" />
 
@@ -27,21 +27,8 @@
             android:layout_below="@id/tv_activity_name"
             android:layout_marginTop="@dimen/dimen_2_dip"
             android:layout_toLeftOf="@+id/tv_activity_joinState"
-            android:singleLine="true"
+            android:lines="1"
             android:text="昂跑马拉松俱乐部"
-            android:textColor="@color/gray_txt"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_activity_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/tv_activity_club"
-            android:layout_marginTop="@dimen/dimen_2_dip"
-            android:layout_toLeftOf="@+id/tv_activity_joinState"
-            android:singleLine="true"
-            android:text="报名截止2017-02-28 00:00:00"
             android:textColor="@color/gray_txt"
             android:textSize="12sp" />
 
@@ -60,7 +47,7 @@
             android:id="@+id/tv_activity_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_activity_time"
+            android:layout_alignBottom="@id/tv_activity_club"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_3_dip"
             android:text="22分"

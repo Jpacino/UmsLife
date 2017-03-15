@@ -40,8 +40,8 @@ public class ChangePasswordActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
-		initTitle("密码修改");
-		initBackView(true);
+		setBackBtn();
+		setTitle("密码修改");
 		init();
 		initData();
 	}

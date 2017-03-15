@@ -51,21 +51,19 @@ public class ClubDetailsActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_club_details);
-		initTitle("俱乐部详情");
+		setBackBtn();
+		setTitle("俱乐部详情");
 		init();
 		initData();
 	}
 
 	private void init() {
 		ListView lvClubMemberList = (ListView) findViewById(R.id.lv_club_member_list);
-		ImageView backIv = (ImageView) findViewById(R.id.iv_base_back);
 		clubNameTv = (TextView) findViewById(R.id.club_name_tv);
 		TextView creatTimeTv = (TextView) findViewById(R.id.createTime_tv);
 		memberTv = (TextView) findViewById(R.id.member_tv);
 		synopsisTv = (TextView) findViewById(R.id.synopsis_tv);
 		applyTv = (TextView) findViewById(R.id.apply_tv);
-		backIv.setVisibility(View.VISIBLE);
-		backIv.setOnClickListener(this);
 		applyTv.setOnClickListener(this);
 		adapter = new ClubMemberListAdapter(clubUserLists);
 		lvClubMemberList.setAdapter(adapter);

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.ums.umslife.R;
 import com.youth.banner.loader.ImageLoader;
+
+import static java.lang.System.load;
 
 /**
  * Created by wujia on 2017/3/3.
@@ -23,7 +26,7 @@ public class GlideImageLoader extends ImageLoader {
 
 
         //Picasso 加载图片简单用法
-        Picasso.with(context).load((String) path).into(imageView);
+        Picasso.with(context).load((String) path).placeholder(R.drawable.activity_theme).error(R.drawable.error_img).into(imageView);
 
         //用fresco加载图片简单用法，记得要写下面的createImageView方法
 //        Uri uri = Uri.parse((String) path);

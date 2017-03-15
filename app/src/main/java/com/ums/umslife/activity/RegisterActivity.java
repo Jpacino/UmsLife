@@ -38,8 +38,8 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		initTitle("注册用户");
-		initBackView(true);
+		setBackBtn();
+		setTitle("用户注册");
 		init();
 	}
 

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +24,6 @@ import com.ums.umslife.activity.LoginActivity;
 import com.ums.umslife.activity.MyActActivity;
 import com.ums.umslife.activity.MyClubActivity;
 import com.ums.umslife.adapter.MineListMenuAdapter;
-import com.ums.umslife.bean.LoginResponseBean;
 import com.ums.umslife.bean.MineMenuBean;
 import com.ums.umslife.bean.UserBean;
 import com.ums.umslife.net.HttpUtils;
@@ -61,9 +59,6 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	@Override
 	protected void initView(TextView titleTv, ImageView titleIv, View childView) {
 		titleTv.setText("个人信息");
-		Bundle bundle = getArguments();
-		LoginResponseBean loginResponseBean = (LoginResponseBean) bundle
-				.getSerializable("loginResponseBean");
 		RelativeLayout rlMineToLoginActivity = (RelativeLayout) childView
 				.findViewById(R.id.rl_mine_to_login_activity);
 		userNameTv = (TextView) childView.findViewById(R.id.user_name_tv);

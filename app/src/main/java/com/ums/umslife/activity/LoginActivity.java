@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		mContext = LoginActivity.this;
 		loginIt = getIntent();
 		initView();
+		noToolbar();
 	}
 
 	private void initView() {
@@ -275,7 +276,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void msgLogin() {
 		SuccinctProgress.showSuccinctProgress(mContext, "正在登录···",
-				SuccinctProgress.THEME_ARC, false, true);
+				SuccinctProgress.THEME_ARC, false, false);
 		phone = accountEt.getText().toString();
 		user_pwd = pwdEt.getText().toString();
 		HttpUtils.init().getLoginResponseBean2(phone, user_pwd)
@@ -326,7 +327,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void pwdLogin() {
 		SuccinctProgress.showSuccinctProgress(mContext, "正在登录···",
-				SuccinctProgress.THEME_ARC, false, true);
+				SuccinctProgress.THEME_ARC, false, false);
 		phone = accountEt.getText().toString();
 		user_pwd = pwdEt.getText().toString();
 		HttpUtils.init().getLoginResponseBean(phone, user_pwd)

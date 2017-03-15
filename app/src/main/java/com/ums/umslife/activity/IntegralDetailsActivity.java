@@ -42,8 +42,8 @@ public class IntegralDetailsActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_integral_details);
 		mContext = this;
-		initTitle("积分明细");
-		initBackView(true);
+		setBackBtn();
+		setTitle("积分明细");
 		init();
 		initData();
 	}

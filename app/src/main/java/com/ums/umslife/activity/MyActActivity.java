@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -21,23 +20,19 @@ import com.ums.umslife.bean.ActivityBean;
 import com.ums.umslife.net.HttpUtils;
 import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.baidu.location.h.j.n;
 
 public class MyActActivity extends BaseActivity implements
 		OnClickListener, OnRefreshListener2<ListView> {
 	private Context mContext;
 	private PullToRefreshListView lvActivityList;
 	private ActivityListAdapter adapter;
-	private List<ActivityBean.ActivitysBean> activityLists = new ArrayList<>();
+	private List<ActivityBean.DataBean.AllActivityListBean> activityLists = new ArrayList<>();
 	private String phone;
 	private TextView emptyTv;
 	public static final int MIN_CLICK_DELAY_TIME = 1000;
@@ -50,8 +45,8 @@ public class MyActActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_act);
 		mContext = this;
-		initTitle("我的活动");
-		initBackView(true);
+		setBackBtn();
+		setTitle("我的活动");
 		init();
 		initData();
 	}
@@ -89,7 +84,7 @@ public class MyActActivity extends BaseActivity implements
 							switch (activityBean.getCode()) {
 								case MyAppConfig.SUCCESS_CODE:
 									activityLists.clear();
-									activityLists.addAll(activityBean.getData());
+									activityLists.addAll(activityBean.getData().getAllActivityList());
 									break;
 								case MyAppConfig.DEFEAT_CODE:
 									MyUtils.showToast(mContext, ""+activityBean.getReason());
@@ -131,7 +126,7 @@ public class MyActActivity extends BaseActivity implements
 				Intent actDetailIt = new Intent(mContext,
 						ActivityDetailsActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("activitysBean", activityBean.getData()
+				bundle.putSerializable("activitysBean", activityBean.getData().getAllActivityList()
 						.get(position - 1));
 				actDetailIt.putExtras(bundle);
 				startActivity(actDetailIt);

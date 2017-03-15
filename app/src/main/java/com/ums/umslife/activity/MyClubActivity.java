@@ -48,8 +48,8 @@ public class MyClubActivity extends BaseActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_club);
 		mContext = this;
-		initTitle("我的俱乐部");
-		initBackView(true);
+		setBackBtn();
+		setTitle("我的俱乐部");
 		init();
 		initData();
 	}

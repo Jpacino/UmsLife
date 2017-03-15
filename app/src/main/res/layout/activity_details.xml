@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:jsusm_text="http://schemas.android.com/apk/res/com.ums.umslife"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <include layout="@layout/base_common_title" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -76,6 +73,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/to_sign_in"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tv_to_upload"
+                        style="@style/tv_submit_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"
+                        android:text="上传"
                         android:textSize="12sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -356,59 +362,6 @@
                     android:layout_gravity="center_vertical"
                     android:text="活动群体" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginLeft="10dp"
-                android:background="@color/line" />
-
-            <RelativeLayout
-                android:id="@+id/club_member_rl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:padding="@dimen/dimen_10_dip" >
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/club_iv"
-                    android:layout_width="@dimen/dimen_58_dip"
-                    android:layout_height="@dimen/dimen_58_dip"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dimen_10_dip"
-                    android:src="@drawable/test_club_im"
-                    jsusm_text:border_color="@color/white"
-                    jsusm_text:border_width="1dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/club_iv"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/club_tv2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="俱乐部" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="简介"
-                        android:textColor="@color/gray_txt"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/img_go_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/im_go_right" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
