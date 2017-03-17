@@ -64,10 +64,9 @@ public class ActivityFragment extends BaseFragment implements
     }
 
     @Override
-    protected void initView(TextView titleTv, ImageView titleIv, View childView) {
+    protected void initView(View childView) {
 
         mContext = getActivity();
-        titleTv.setText("活动");
         activityLv = (PullToRefreshListView) childView
                 .findViewById(R.id.lv_activity_list);
         View headView = LayoutInflater.from(mContext).inflate(R.layout.act_headview,null);
@@ -90,7 +89,6 @@ public class ActivityFragment extends BaseFragment implements
         titles.clear();
         for (int i = 0; i < hotActLists.size(); i++) {
             imgs.add(PIC_BASE_URL+hotActLists.get(i).getPicURL());
-            Log.d(MyAppConfig.TAG, "initBanner: "+imgs.get(i));
             titles.add(activityLists.get(i).getActivityTheme());
         }
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);

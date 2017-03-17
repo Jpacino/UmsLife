@@ -24,6 +24,10 @@ import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.ums.umslife.R;
 import com.ums.umslife.bean.ActivityApplyBean;
 import com.ums.umslife.bean.ActivityBean;
@@ -31,10 +35,25 @@ import com.ums.umslife.bean.ActivitySignBean;
 import com.ums.umslife.net.HttpUtils;
 import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
+import com.ums.umslife.utils.PictureUtil;
+import com.ums.umslife.utils.ToastUtil;
 import com.ums.umslife.view.SuccinctProgress;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
+import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
+import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
+import cn.finalteam.rxgalleryfinal.rxbus.event.BaseResultEvent;
+import cn.finalteam.rxgalleryfinal.rxbus.event.ImageMultipleResultEvent;
+import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,6 +76,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private LatLng actLatLng;
     private Double actLat = 0.00, actLng = 0.00;
     private TextView uploadTv;
+    private Map<String, RequestBody> paramsMaps = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +88,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
         setTitle("活动详情");
         init();
         initData();
+//        initImageLoader();
         initLocation();
     }
 
@@ -139,29 +160,32 @@ public class ActivityDetailsActivity extends BaseActivity implements
             signTv.setVisibility(View.VISIBLE);
             uploadTv.setVisibility(View.GONE);
         }
+        Log.d(TAG, "initState: ==="+activitysBean.getJoinState());
         if (activitysBean.getJoinState().isEmpty()) {
             applyState = "0";
             applyTv.setText("报名");
-            applyTv.setBackgroundResource(R.drawable.bt_count_down_bg_selector);
-            applyTv.setClickable(true);
+//            applyTv.setBackgroundResource(R.drawable.bt_login_normal_shape);
+//            applyTv.setClickable(true);
+            applyTv.setEnabled(true);
             signTv.setText("签到");
-            signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
-            signTv.setClickable(false);
+//            signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+//            signTv.setClickable(false);
+            signTv.setEnabled(false);
         } else if (activitysBean.getJoinState().equals(NOT_SIGN)) {
             applyState = "1";
             applyTv.setText("取消报名");
-            applyTv.setBackgroundResource(R.drawable.bt_count_down_bg_selector);
+//            applyTv.setBackgroundResource(R.drawable.bt_login_normal_shape);
             applyTv.setClickable(true);
             signTv.setText("签到");
-            signTv.setBackgroundResource(R.drawable.bt_count_down_bg_selector);
+//            signTv.setBackgroundResource(R.drawable.bt_login_normal_shape);
             signTv.setClickable(true);
         } else if (activitysBean.getJoinState().equals(IS_SIGN)) {
             applyState = "1";
             applyTv.setText("取消报名");
-            applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+//            applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
             applyTv.setClickable(false);
             signTv.setText("已签到");
-            signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+//            signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
             signTv.setClickable(false);
         }
 
@@ -213,8 +237,8 @@ public class ActivityDetailsActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.tv_to_sign:
-                Log.d(MyAppConfig.TAG, "点击签到");
-                location();
+                sign();
+//                location();
                 break;
             case R.id.tv_apply:
                 apply();
@@ -228,6 +252,73 @@ public class ActivityDetailsActivity extends BaseActivity implements
     }
 
     private void upload() {
+        RxGalleryFinal.with(mContext)
+                .image()
+//                .radio()
+//                .crop()
+                .multiple()
+                .imageLoader(ImageLoaderType.PICASSO)
+                .subscribe(new RxBusResultSubscriber<ImageMultipleResultEvent>() {
+                    @Override
+                    protected void onEvent(ImageMultipleResultEvent imageMultipleResultEvent) {
+                        File file = null;
+                        try {
+                            String originalPath = imageMultipleResultEvent.getResult().get(0).getOriginalPath();
+                            String smallPath = PictureUtil.bitmapToPath(originalPath);
+                            file = new File(smallPath);
+                        } catch (Exception e) {
+                            Log.d(TAG, "onEvent: " + e.getMessage());
+                            MyUtils.showToast(mContext, "图片路径异常");
+                        }
+                        if (file != null) {
+                            SuccinctProgress.showSuccinctProgress(mContext, "正在上传...",
+                                    SuccinctProgress.THEME_LINE, false, false);
+                            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), file);
+                            paramsMaps.put("file\";filename=\"" + file.getName(), requestBody);
+                            HttpUtils.init().upLoadPic(phone, activityNo, paramsMaps).enqueue(new Callback<ActivitySignBean>() {
+                                @Override
+                                public void onResponse(Call<ActivitySignBean> call, Response<ActivitySignBean> response) {
+                                    signBean = response.body();
+                                    if (signBean != null) {
+                                        switch (signBean.getCode()) {
+                                            case MyAppConfig.SUCCESS_CODE:
+                                                activitysBean.setJoinState(IS_SIGN);
+                                                MyUtils.showToast(mContext,
+                                                        "" + signBean.getReason());
+                                                break;
+                                            case MyAppConfig.DEFEAT_CODE:
+                                                MyUtils.showToast(mContext,
+                                                        "" + signBean.getReason());
+                                                break;
+                                            case MyAppConfig.TWO_CODE:
+                                                MyUtils.showToast(mContext,
+                                                        "" + signBean.getReason());
+                                                break;
+                                            default:
+                                                MyUtils.showToast(mContext, "数据异常");
+                                                break;
+                                        }
+                                    } else {
+                                        MyUtils.showToast(mContext, "数据异常");
+                                    }
+                                    SuccinctProgress.dismiss();
+                                    initData();
+                                }
+
+
+                                @Override
+                                public void onFailure(Call<ActivitySignBean> call, Throwable t) {
+                                    SuccinctProgress.dismiss();
+                                    initData();
+                                    Log.d(MyAppConfig.TAG, "异常" + t.getMessage());
+                                    MyUtils.showToast(mContext, "数据异常");
+                                }
+
+                            });
+                        }
+
+                    }
+                }).openGallery();
     }
 
     /**
@@ -236,12 +327,15 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private void location() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
+//        signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
         //检查权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             //进入到这里代表没有权限.
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 //已经禁止提示了
+                SuccinctProgress.dismiss();
+                initData();
                 Toast.makeText(mContext, "您已禁止该权限，需要重新开启。", Toast.LENGTH_SHORT).show();
             } else {
                 //请求权限
@@ -250,7 +344,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
 
         } else {
             //有权限，开始定位
-
+            Log.d(TAG, "location: 有权限开始定位");
             mLocationClient.start();
         }
     }
@@ -272,7 +366,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private void apply() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
-        applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+//        applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
         applyTv.setClickable(false);
         Call<ActivityApplyBean> call = HttpUtils.init().getActivityApplyBean(
                 phone, activityNo, applyState);
@@ -287,6 +381,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
                         case MyAppConfig.SUCCESS_CODE:
                             activitysBean.setJoinState(applyBean.getData()
                                     .getJoinState());
+                            activitysBean.setEnrollment(applyBean.getData().getEnrollment());
                             MyUtils.showToast(mContext, "" + applyBean.getReason());
                             break;
                         case MyAppConfig.DEFEAT_CODE:
@@ -399,6 +494,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
 
         @Override
         public void onReceiveLocation(BDLocation location) {
+
             String result = "";
             //获取定位结果
             StringBuffer sb = new StringBuffer(256);
@@ -486,27 +582,34 @@ public class ActivityDetailsActivity extends BaseActivity implements
                     sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
                 }
             }
+            mLocationClient.stop();
             LatLng LocLatLng = new LatLng(location.getLatitude(), location.getLongitude());
             Double distance = DistanceUtil.getDistance(actLatLng, LocLatLng);
             Log.d(MyAppConfig.TAG, "距离: " + distance + (distance < MAX_DISTANCE));
-            if (location.getLocType() == BDLocation.TypeGpsLocation || location.getLocType() == BDLocation.TypeNetWorkLocation || location.getLocType() == BDLocation.TypeOffLineLocation) {
+            Log.i(TAG, sb.toString());
+            int Type = location.getLocType();
+            if (Type == BDLocation.TypeGpsLocation || location.getLocType() == BDLocation.TypeNetWorkLocation || location.getLocType() == BDLocation.TypeOffLineLocation) {
                 if (distance < MAX_DISTANCE) {
                     sign();
                 } else {
                     SuccinctProgress.dismiss();
-                    MyUtils.showToast(mContext, "距离太远,无法签到");
+                    Log.d(TAG, "onReceiveLocation: 距离太远");
+//                    Toast.makeText(mContext,"距离太远，无法签到",Toast.LENGTH_SHORT).show();
+                    MyUtils.showToast(mContext,"距离太远，无法签到");
+                    initState();
                 }
-            }else if (result.isEmpty()){
+            } else if (result.isEmpty()) {
                 SuccinctProgress.dismiss();
+                initState();
                 MyUtils.showToast(mContext, "定位失败");
-            }
-            else{
+            } else {
                 SuccinctProgress.dismiss();
+                initData();
                 MyUtils.showToast(mContext, result);
             }
 
-            Log.i("BaiduLocationApiDem", sb.toString());
-            mLocationClient.stop();
+            Log.i(TAG, sb.toString());
+            Log.d(TAG, "==========取消定位");
         }
 
         @Override
@@ -514,6 +617,17 @@ public class ActivityDetailsActivity extends BaseActivity implements
 
         }
     }
+
+    private void initImageLoader() {
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
+        config.threadPriority(Thread.NORM_PRIORITY - 2);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        ImageLoader.getInstance().init(config.build());
+    }
+
 
     @Override
     protected void onDestroy() {

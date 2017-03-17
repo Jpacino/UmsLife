@@ -4,32 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_45_dip"
-        android:background="@color/red_main" >
-
-        <TextView
-            android:id="@+id/fragment_base_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            android:text=""
-            android:textSize="16sp" />
-
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/fragment_base_title_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/im_search" />
-    </RelativeLayout>
-
     <FrameLayout
         android:id="@+id/fragment_base_child_container"
         android:layout_width="match_parent"

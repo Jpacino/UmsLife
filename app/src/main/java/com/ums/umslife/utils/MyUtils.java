@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.InputType;
+import android.widget.Toast;
+
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.ums.umslife.R;
 import com.ums.umslife.view.LabelTextView;
+
+import static android.R.attr.duration;
 
 public class MyUtils {
 	
@@ -32,6 +36,17 @@ public class MyUtils {
 			}
 		}, 500);
 	}
+//	private static Toast mToast = null;
+//	public static void showToast(Context context, String text) {
+//		if (mToast == null) {
+//			mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+//		} else {
+//			mToast.setText(text);
+//			mToast.setDuration(Toast.LENGTH_SHORT);
+//		}
+//
+//		mToast.show();
+//	}
 	public static void showToast(Context context, String str){
 		ToastUtil toastUtil = new ToastUtil();
 		toastUtil.Short(context, str).setToastBackground(Color.WHITE, R.drawable.toast_radius).show();

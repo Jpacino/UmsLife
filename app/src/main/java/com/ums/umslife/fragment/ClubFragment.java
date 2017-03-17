@@ -55,8 +55,7 @@ public class ClubFragment extends BaseFragment implements
 	}
 
 	@Override
-	protected void initView(TextView titleTv, ImageView titleIv, View childView) {
-		titleTv.setText("俱乐部");
+	protected void initView(View childView) {
 		mContext = getActivity();
 		clubLv = (PullToRefreshListView) childView
 				.findViewById(R.id.lv_club_list);

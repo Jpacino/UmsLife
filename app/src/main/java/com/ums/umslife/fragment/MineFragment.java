@@ -57,8 +57,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	}
 
 	@Override
-	protected void initView(TextView titleTv, ImageView titleIv, View childView) {
-		titleTv.setText("个人信息");
+	protected void initView(View childView) {
 		RelativeLayout rlMineToLoginActivity = (RelativeLayout) childView
 				.findViewById(R.id.rl_mine_to_login_activity);
 		userNameTv = (TextView) childView.findViewById(R.id.user_name_tv);

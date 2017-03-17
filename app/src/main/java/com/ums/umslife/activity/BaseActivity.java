@@ -1,6 +1,6 @@
 package com.ums.umslife.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +12,13 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.ums.umslife.R;
+import com.ums.umslife.utils.MyAppConfig;
 
 public class BaseActivity extends AppCompatActivity {
 	private TextView title;
 	private ImageView back;
-	protected final String TAG = this.getClass().getSimpleName();
-
+	protected final String TAG = MyAppConfig.TAG;
 	protected void setTitle(String msg) {
 		if (title != null) {
 			title.setText(msg);

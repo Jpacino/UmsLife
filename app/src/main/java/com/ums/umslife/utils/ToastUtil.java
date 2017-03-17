@@ -88,11 +88,9 @@ public class ToastUtil {
 	 * 短时间显示Toast
 	 */
 	public ToastUtil Short(Context context, CharSequence message) {
-		Log.d(MyAppConfig.TAG, "toast===" + toast);
 		if (toast == null
 				|| (toastView != null && toastView.getChildCount() > 1)) {
 			toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-			Log.d(MyAppConfig.TAG, "toast===" + toast);
 			toastView = null;
 		} else {
 			toast.setText(message);
