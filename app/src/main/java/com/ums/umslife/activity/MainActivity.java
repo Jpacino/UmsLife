@@ -1,9 +1,9 @@
 package com.ums.umslife.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioButton;
@@ -18,8 +18,8 @@ import com.ums.umslife.utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements
-        OnRequestPermissionsResultCallback {
+public class MainActivity extends BaseActivity
+         {
 
     private RadioGroup rgFirstMain;
     private List<Fragment> mFragments = new ArrayList<>();
@@ -28,28 +28,37 @@ public class MainActivity extends BaseActivity implements
     private ActivityFragment activityFragment = new ActivityFragment();
     private ClubFragment clubFragment = new ClubFragment();
     private MineFragment mineFragment = new MineFragment();
-
+    private FragmentTransaction mTransaction;
+    private static Fragment currentFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        titles.add("活动");
-        titles.add("俱乐部");
-        titles.add("个人信息");
+        initView();
+        initData();
+    }
 
-        mFragments.add(activityFragment);
-        mFragments.add(clubFragment);
-        mFragments.add(mineFragment);
-        ((RadioButton) rgFirstMain.getChildAt(0)).setChecked(true);
+
+    protected void init() {
 
     }
 
-    private void init() {
+
+    protected void initView() {
         rgFirstMain = (RadioGroup) findViewById(R.id.rg_first_main);
         rgFirstMain.setOnCheckedChangeListener(mCheckListener);
     }
 
+    protected void initData() {
+        titles.add("活动");
+        titles.add("俱乐部");
+        titles.add("个人信息");
+        mFragments.add(activityFragment);
+        mFragments.add(clubFragment);
+        mFragments.add(mineFragment);
+        ((RadioButton) rgFirstMain.getChildAt(0)).setChecked(true);
+    }
     /**
      * 监听事件
      */
@@ -58,19 +67,33 @@ public class MainActivity extends BaseActivity implements
             View child = group.findViewById(checkedId);
             int index = group.indexOfChild(child);
             Fragment fragment = mFragments.get(index);
-            replaceFragment(fragment);
+            ctrlFragment(fragment);
             setTitle(titles.get(index));
         }
     };
 
-    /**
-     * 替换Fragment
-     */
-    private void replaceFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.ll_first_container, fragment).commit();
+             /**
+              * 控制Fragment
+              * @param fragment 要显示的fragment
+              */
+    private void ctrlFragment(Fragment fragment){
+        mTransaction = getFragmentManager().beginTransaction();
+        if(currentFragment!=null&&currentFragment.isAdded()){
+            mTransaction.hide(currentFragment);
+        }
+        if(fragment.isAdded()){
+            mTransaction.show(fragment);
+        }else{
+            mTransaction.add(R.id.ll_first_container,fragment);
+        }
+        mTransaction.commit();
+        currentFragment = fragment;
+
     }
 
+             /**
+              * 重写返回按钮，再按一次退出程序
+              */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

@@ -30,7 +30,7 @@
             android:gravity="left|center_vertical"
             android:hint="请输入手机号码"
             android:paddingRight="@dimen/dimen_7_dip"
-            android:singleLine="true"
+            android:lines="1"
             android:textSize="14sp" />
 
         <ImageView

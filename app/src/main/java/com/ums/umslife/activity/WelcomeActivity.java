@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity {
 	private String resCode = "";
 	private boolean  isAuto;
 	private String phone = "", user_pwd = "";
@@ -49,26 +49,35 @@ public class WelcomeActivity extends AppCompatActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-		mContext = this;
+		init();
 		initView();
-		loadData();
+		initData();
+
+
 	}
 
-	private void initView() {
+
+	protected void init() {
+		mContext = this;
+		noToolbar();
+	}
+
+	protected void initView() {
 		ImageView logoIv = (ImageView) findViewById(R.id.welcome_urovo_logo_iv);
 		AlphaAnimation anim = new AlphaAnimation(0, 1);
 		anim.setDuration(2500);
 		logoIv.startAnimation(anim);
-		mHandler.sendEmptyMessageDelayed(1, 3000);// 延迟两秒发消息跳转mainactivity
-		initData();
+
 	}
 
-	private void initData() {
+	protected void initData() {
+		mHandler.sendEmptyMessageDelayed(1, 3000);// 延迟两秒发消息跳转mainactivity
 		SharedPreferences autoShare = getSharedPreferences("auto", Context.MODE_PRIVATE);
 		isAuto = autoShare.getBoolean("autoLogin", false);
 		SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
 		phone = loginShare.getString("phone", "");
 		user_pwd = loginShare.getString("user_pwd", "");
+		loadData();
 	}
 
 	private void loadData() {

@@ -3,16 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/lv_activity_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/act_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="0.5dp" />
-    <View 
-        android:id="@+id/line"
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="@color/red_main"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|top" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/empty_tv"

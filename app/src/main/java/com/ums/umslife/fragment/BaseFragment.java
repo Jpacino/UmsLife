@@ -13,6 +13,7 @@ import com.ums.umslife.R;
 
 public abstract class BaseFragment extends Fragment {
 	private View mRootView;
+	protected final String TAG = "androidjj";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {

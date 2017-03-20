@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -41,14 +40,19 @@ public class IntegralDetailsActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_integral_details);
-		mContext = this;
-		setBackBtn();
-		setTitle("积分明细");
+
 		init();
+		initView();
 		initData();
 	}
 
 	private void init() {
+		mContext = this;
+		setBackBtn();
+		setTitle("积分明细");
+	}
+
+	private void initView() {
 		integralLv = (PullToRefreshListView) findViewById(R.id.lv_may_act);
 		emptyTv = (TextView) findViewById(R.id.empty_tv);
 		integralLv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);

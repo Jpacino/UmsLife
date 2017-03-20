@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/integral_tv"
-            android:singleLine="true"
+            android:lines="1"
             android:text="活动签到"
             android:textSize="16sp" />
 
@@ -27,7 +27,7 @@
             android:layout_below="@id/way_tv"
             android:layout_marginTop="@dimen/dimen_2_dip"
             android:layout_toLeftOf="@+id/time_tv"
-            android:singleLine="true"
+            android:lines="1"
             android:text="健步走"
             android:textColor="@color/gray_txt"
             android:textSize="12sp" />

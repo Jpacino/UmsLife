@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/ll_sign"
-                    android:singleLine="true"
+                    android:lines="1"
                     android:text="南京银商春季马拉松"
                     android:textSize="16sp" />
 
@@ -43,7 +43,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/activity_name_tv"
                     android:layout_toLeftOf="@+id/ll_sign"
-                    android:singleLine="true"
+                    android:lines="1"
                     android:text="俱乐部"
                     android:textColor="@color/gray_txt"
                     android:textSize="12sp" />

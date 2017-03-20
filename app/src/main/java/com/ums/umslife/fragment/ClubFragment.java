@@ -69,7 +69,7 @@ public class ClubFragment extends BaseFragment implements
 	}
 
 	private void loadData() {
-		SharedPreferences loginShare = getActivity().getSharedPreferences("login",
+		SharedPreferences loginShare = mContext.getSharedPreferences("login",
 				Context.MODE_PRIVATE);
 		String phone = loginShare.getString("phone", "");
 		HttpUtils.init().getClubBean(phone, "0")

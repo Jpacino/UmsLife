@@ -11,11 +11,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ums.umslife.R;
 import com.ums.umslife.activity.ChangePasswordActivity;
@@ -42,6 +40,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	private final static String TAG = "androidjj";
 	private final static String SUCCESS_CODE = "0";
 	private UserBean userBean;
+	private Context mContext;
 	private List<MineMenuBean> menuList = new ArrayList<>();
 	{
 		menuList.add(new MineMenuBean(0, "俱乐部"));
@@ -58,6 +57,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 
 	@Override
 	protected void initView(View childView) {
+		mContext = getActivity();
 		RelativeLayout rlMineToLoginActivity = (RelativeLayout) childView
 				.findViewById(R.id.rl_mine_to_login_activity);
 		userNameTv = (TextView) childView.findViewById(R.id.user_name_tv);
@@ -80,6 +80,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 	}
 
 	private void initDatas() {
+
 		SharedPreferences loginShare = getActivity().getSharedPreferences("login",
 				Context.MODE_PRIVATE);
 		String phone = loginShare.getString("phone", "");
@@ -98,20 +99,17 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 						totalIntegralTv.setText(userBean.getData()
 								.getTotalIntegral());
 					} else {
-						Toast.makeText(getActivity(), "数据异常",
-								Toast.LENGTH_SHORT).show();
+						MyUtils.showToast(mContext,"数据异常");
 					}
 				} else {
-					Toast.makeText(getActivity(), "数据异常",
-							Toast.LENGTH_SHORT).show();
+					MyUtils.showToast(mContext,"数据异常");
 				}
 
 			}
 
 			@Override
 			public void onFailure(Call<UserBean> arg0, Throwable arg1) {
-				Toast.makeText(getActivity(), "连接失败",
-						Toast.LENGTH_SHORT).show();
+				MyUtils.showToast(mContext,"连接失败");
 
 			}
 		});
@@ -129,7 +127,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 
 	private void logout() {
 		getActivity().finish();
-		Intent loginIt = new Intent(getActivity(), LoginActivity.class);
+		Intent loginIt = new Intent(mContext, LoginActivity.class);
 		loginIt.putExtra("isAuto", "00");
 		startActivity(loginIt);
 
@@ -142,16 +140,16 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 								long id) {
 			switch (position) {
 			case 0:
-				MyUtils.startAct(getActivity(), MyClubActivity.class);
+				MyUtils.startAct(mContext, MyClubActivity.class);
 				break;
 			case 1:
-				MyUtils.startAct(getActivity(), MyActActivity.class);
+				MyUtils.startAct(mContext, MyActActivity.class);
 				break;
 			case 2:
-				MyUtils.startAct(getActivity(), IntegralDetailsActivity.class);
+				MyUtils.startAct(mContext, IntegralDetailsActivity.class);
 				break;
 			case 3:
-				MyUtils.startAct(getActivity(), ChangePasswordActivity.class);
+				MyUtils.startAct(mContext, ChangePasswordActivity.class);
 				break;
 			case 4:
 				showDialog();
@@ -163,7 +161,7 @@ public class MineFragment extends BaseFragment implements OnClickListener {
 		}
 
 		private void showDialog() {
-			AlertDialog.Builder builder = new Builder(getActivity());
+			AlertDialog.Builder builder = new Builder(mContext);
 			builder.setMessage("确认退出吗？");
 			builder.setCancelable(false);
 			builder.setPositiveButton("取消",

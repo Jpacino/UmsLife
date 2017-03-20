@@ -47,20 +47,20 @@ public class MyClubActivity extends BaseActivity implements OnClickListener,
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_club);
-		mContext = this;
-		setBackBtn();
-		setTitle("我的俱乐部");
 		init();
+		initView();
 		initData();
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-		loadData();
+
+	protected void init() {
+		mContext = this;
+		setBackBtn();
+		setTitle("我的俱乐部");
 	}
 
-	private void init() {
+
+	protected void initView() {
 		clubLv = (PullToRefreshListView) findViewById(R.id.lv_may_club);
 		emptyTv = (TextView) findViewById(R.id.empty_tv);
 		clubLv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
@@ -71,9 +71,11 @@ public class MyClubActivity extends BaseActivity implements OnClickListener,
 		setEmptyView(clubLists.size(), emptyTv);
 	}
 
-	private void initData() {
+
+	protected void initData() {
 		SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
 		phone = loginShare.getString("phone", "");
+		loadData();
 	}
 
 	private void loadData() {

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#292836</color>
     <color name="colorPrimaryDark">#df3031</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#df3031</color>
     <color name="gray_color">#e3e3e3</color>
     <color name="red_main">#df3031</color>
     <color name="red_txt">#EE0000</color>
@@ -19,4 +19,6 @@
     <color name="line">#d8d8d8</color>
     <color name="white">#ffffff</color>
     <color name="gray_txt">#666666</color>
+    <color name="transparent">#FFFFFFFF</color>
+
 </resources>

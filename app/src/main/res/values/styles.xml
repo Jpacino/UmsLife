@@ -32,9 +32,8 @@
     </style>
 
     <style name="tv_submit_style">
-        <item name="android:background">@drawable/bt_submit_bg_selector</item>
+        <item name="android:background">@drawable/bt_count_down_bg_selector</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">17sp</item>
         <item name="android:paddingRight">@dimen/dimen_15_dip</item>
         <item name="android:paddingLeft">@dimen/dimen_15_dip</item>
         <item name="android:paddingTop">@dimen/dimen_5_dip</item>

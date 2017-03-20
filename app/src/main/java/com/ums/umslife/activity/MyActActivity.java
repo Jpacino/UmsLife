@@ -44,20 +44,19 @@ public class MyActActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_act);
+		init();
+		initView();
+		initData();
+	}
+
+
+	protected void init() {
 		mContext = this;
 		setBackBtn();
 		setTitle("我的活动");
-		init();
-		initData();
-	}
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		loadData();
 	}
 
-	private void init() {
+	protected void initView() {
 		lvActivityList = (PullToRefreshListView) findViewById(R.id.lv_may_act);
 		emptyTv = (TextView) findViewById(R.id.empty_tv);
 		lvActivityList.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
@@ -68,9 +67,11 @@ public class MyActActivity extends BaseActivity implements
 		setEmptyView(activityLists.size(), emptyTv);
 	}
 
-	private void initData() {
+
+	protected void initData() {
 		SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
 		phone = loginShare.getString("phone", "");
+		loadData();
 	}
 
 	private void loadData() {

@@ -3,9 +3,10 @@ package com.ums.umslife.utils;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Button;
+
 import com.ums.umslife.R;
 
-public class CountDownUtils {
+public class CountDownUtils2 {
 	private final static int COUNT_DOWN_NOW = 0;
 	private final static int COUNT_DOWN_FINISH = 1;
 	private final static long MAX_TIME = 60000;
@@ -13,7 +14,7 @@ public class CountDownUtils {
 	private static long mCurrentTime;
 	private static Context context;
 
-	public CountDownUtils(Context context, Button btSendAuthCode) {
+	public CountDownUtils2(Context context, Button btSendAuthCode) {
 		this.context = context;
 		this.btSendAuthCode = btSendAuthCode;
 	}

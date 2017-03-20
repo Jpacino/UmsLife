@@ -46,7 +46,7 @@
                     android:id="@+id/synopsis_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:lines="1"
                     android:text="简介"
                     android:textColor="@color/gray_txt"
                     android:textSize="12sp" />

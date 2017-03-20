@@ -6,13 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.baidu.platform.comapi.map.H;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -36,11 +38,9 @@ import com.ums.umslife.net.HttpUtils;
 import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
 import com.ums.umslife.utils.PictureUtil;
-import com.ums.umslife.utils.ToastUtil;
 import com.ums.umslife.view.SuccinctProgress;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +48,8 @@ import java.util.Map;
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
-import cn.finalteam.rxgalleryfinal.rxbus.event.BaseResultEvent;
 import cn.finalteam.rxgalleryfinal.rxbus.event.ImageMultipleResultEvent;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,22 +74,39 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private Double actLat = 0.00, actLng = 0.00;
     private TextView uploadTv;
     private Map<String, RequestBody> paramsMaps = new HashMap<>();
+    private BDLocation location;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+            checkResult(location);
+                    break;
 
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_details);
+        init();
+        initView();
+        initData();
+        initState();
+    }
+
+
+    protected void init() {
         mContext = this;
         setBackBtn();
         setTitle("活动详情");
-        init();
-        initData();
-//        initImageLoader();
-        initLocation();
+
     }
 
-    private void init() {
+    protected void initView() {
         signTv = (TextView) findViewById(R.id.tv_to_sign);
         applyTv = (TextView) findViewById(R.id.tv_apply);
         uploadTv = (TextView) findViewById(R.id.tv_to_upload);
@@ -105,17 +119,16 @@ public class ActivityDetailsActivity extends BaseActivity implements
         stopTimeTv = (TextView) findViewById(R.id.endTime_tv);
         contentTv = (TextView) findViewById(R.id.content_tv);
         integralTv = (TextView) findViewById(R.id.integral_tv);
-        myListener = new MyLocationListener();
         mLocationClient = new LocationClient(getApplicationContext());
-        //声明LocationClient类
+        myListener = new MyLocationListener();
         mLocationClient.registerLocationListener(myListener);
         signTv.setOnClickListener(this);
         applyTv.setOnClickListener(this);
         uploadTv.setOnClickListener(this);
-
+        initLocation();
     }
 
-    private void initData() {
+    protected void initData() {
         Intent actDetailIt = getIntent();
         activitysBean = (ActivityBean.DataBean.AllActivityListBean) actDetailIt
                 .getSerializableExtra("activitysBean");
@@ -133,6 +146,14 @@ public class ActivityDetailsActivity extends BaseActivity implements
             }
         }
         actLatLng = new LatLng(actLat, actLng);
+    }
+
+
+
+    /**
+     * 初始化报名和签到的状态
+     */
+    private void initState() {
         themeTv.setText(activitysBean.getActivityTheme());
         signStartTimeTv.setText(activitysBean.getSignStartTime());
         signEndTimeTv.setText(activitysBean.getSignEndTime());
@@ -146,13 +167,6 @@ public class ActivityDetailsActivity extends BaseActivity implements
             clubNameTv.setText(activitysBean.getClubName());
         }
         placeTv.setText(activitysBean.getActivityPlace());
-        initState();
-    }
-
-    /**
-     * 初始化报名和签到的状态
-     */
-    private void initState() {
         if (activitysBean.getSign_atta().equals(MyAppConfig.ONE_CODE)) {
             signTv.setVisibility(View.GONE);
             uploadTv.setVisibility(View.VISIBLE);
@@ -164,29 +178,21 @@ public class ActivityDetailsActivity extends BaseActivity implements
         if (activitysBean.getJoinState().isEmpty()) {
             applyState = "0";
             applyTv.setText("报名");
-//            applyTv.setBackgroundResource(R.drawable.bt_login_normal_shape);
-//            applyTv.setClickable(true);
             applyTv.setEnabled(true);
             signTv.setText("签到");
-//            signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
-//            signTv.setClickable(false);
             signTv.setEnabled(false);
         } else if (activitysBean.getJoinState().equals(NOT_SIGN)) {
             applyState = "1";
             applyTv.setText("取消报名");
-//            applyTv.setBackgroundResource(R.drawable.bt_login_normal_shape);
-            applyTv.setClickable(true);
+            applyTv.setEnabled(true);
             signTv.setText("签到");
-//            signTv.setBackgroundResource(R.drawable.bt_login_normal_shape);
-            signTv.setClickable(true);
+            signTv.setEnabled(true);
         } else if (activitysBean.getJoinState().equals(IS_SIGN)) {
             applyState = "1";
             applyTv.setText("取消报名");
-//            applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
-            applyTv.setClickable(false);
+            applyTv.setEnabled(false);
             signTv.setText("已签到");
-//            signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
-            signTv.setClickable(false);
+            signTv.setEnabled(false);
         }
 
     }
@@ -237,8 +243,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.tv_to_sign:
-                sign();
-//                location();
+                location();
                 break;
             case R.id.tv_apply:
                 apply();
@@ -309,7 +314,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
                                 @Override
                                 public void onFailure(Call<ActivitySignBean> call, Throwable t) {
                                     SuccinctProgress.dismiss();
-                                    initData();
+                                    initState();
                                     Log.d(MyAppConfig.TAG, "异常" + t.getMessage());
                                     MyUtils.showToast(mContext, "数据异常");
                                 }
@@ -327,7 +332,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private void location() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
-//        signTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+        signTv.setEnabled(false);
         //检查权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -335,7 +340,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 //已经禁止提示了
                 SuccinctProgress.dismiss();
-                initData();
+                initState();
                 Toast.makeText(mContext, "您已禁止该权限，需要重新开启。", Toast.LENGTH_SHORT).show();
             } else {
                 //请求权限
@@ -366,8 +371,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private void apply() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
-//        applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
-        applyTv.setClickable(false);
+        applyTv.setEnabled(false);
         Call<ActivityApplyBean> call = HttpUtils.init().getActivityApplyBean(
                 phone, activityNo, applyState);
         call.enqueue(new Callback<ActivityApplyBean>() {
@@ -401,14 +405,14 @@ public class ActivityDetailsActivity extends BaseActivity implements
                     MyUtils.showToast(mContext, "数据异常");
                 }
                 SuccinctProgress.dismiss();
-                initData();
+                initState();
             }
 
             @Override
             public void onFailure(Call<ActivityApplyBean> call,
                                   Throwable throwable) {
                 SuccinctProgress.dismiss();
-                initData();
+                initState();
                 MyUtils.showToast(mContext, "连接失败");
                 Log.d(MyAppConfig.TAG, "异常" + throwable.getMessage());
             }
@@ -447,14 +451,14 @@ public class ActivityDetailsActivity extends BaseActivity implements
                             MyUtils.showToast(mContext, "数据异常");
                         }
                         SuccinctProgress.dismiss();
-                        initData();
+                        initState();
                     }
 
                     @Override
                     public void onFailure(Call<ActivitySignBean> call,
                                           Throwable throwable) {
                         SuccinctProgress.dismiss();
-                        initData();
+                        initState();
                         Log.d(MyAppConfig.TAG, "异常" + throwable.getMessage());
                         MyUtils.showToast(mContext, "数据异常");
                     }
@@ -462,154 +466,129 @@ public class ActivityDetailsActivity extends BaseActivity implements
     }
 
 
-    //    private void checkResult(BDLocation location) {
-//        String rusulst = null;
-//        if (location.getLocType() == BDLocation.TypeGpsLocation
-//                || location.getLocType() == BDLocation.TypeNetWorkLocation) {
-//            // GPS定位结果
-//            // 网络定位结果
-//            double latitude = location.getLatitude();
-//            double longitude = location.getLongitude();
-//            rusulst = latitude + "," + longitude;
-//        } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-//            double latitude = location.getLatitude();
-//            double longitude = location.getLongitude();
-//            rusulst = latitude + "," + longitude;
-//        } else if (location.getLocType() == BDLocation.TypeServerError) {
-//            rusulst = "服定位失败，请检查定位权限是否开启";
-//        } else if (location.getLocType() == BDLocation.TypeNetWorkException
-//                || location.getLocType() == 505) {
-//            rusulst = "定位失败，请检查网络是否通畅";
-//        } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-//            rusulst = "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机";
-//        }
-//        if (rusulst != null){
-//        MyUtils.showToast(mContext, rusulst + "");
-//
-//        }else{
-//            MyUtils.showToast(mContext,"定位失败");
-//        }
-//    }
+    private void checkResult(BDLocation location){
+        String result = "";
+        //获取定位结果
+        StringBuffer sb = new StringBuffer(256);
+
+        sb.append("time : ");
+        sb.append(location.getTime());    //获取定位时间
+
+        sb.append("\nerror code : ");
+        sb.append(location.getLocType());    //获取类型类型
+
+        sb.append("\nlatitude : ");
+        sb.append(location.getLatitude());    //获取纬度信息
+
+        sb.append("\nlontitude : ");
+        sb.append(location.getLongitude());    //获取经度信息
+
+        sb.append("\nradius : ");
+        sb.append(location.getRadius());    //获取定位精准度
+
+        if (location.getLocType() == BDLocation.TypeGpsLocation) {
+
+            // GPS定位结果
+            sb.append("\nspeed : ");
+            sb.append(location.getSpeed());    // 单位：公里每小时
+
+            sb.append("\nsatellite : ");
+            sb.append(location.getSatelliteNumber());    //获取卫星数
+
+            sb.append("\nheight : ");
+            sb.append(location.getAltitude());    //获取海拔高度信息，单位米
+
+            sb.append("\ndirection : ");
+            sb.append(location.getDirection());    //获取方向信息，单位度
+
+            sb.append("\naddr : ");
+            sb.append(location.getAddrStr());    //获取地址信息
+
+            sb.append("\ndescribe : ");
+            sb.append("gps定位成功");
+
+        } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+
+            // 网络定位结果
+            sb.append("\naddr : ");
+            sb.append(location.getAddrStr());    //获取地址信息
+
+            sb.append("\noperationers : ");
+            sb.append(location.getOperators());    //获取运营商信息
+
+            sb.append("\ndescribe : ");
+            sb.append("网络定位成功");
+
+        } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
+
+            // 离线定位结果
+            sb.append("\ndescribe : ");
+            sb.append("离线定位成功，离线定位结果也是有效的");
+
+        } else if (location.getLocType() == BDLocation.TypeServerError) {
+
+            sb.append("\ndescribe : ");
+            sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
+            result = "服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因";
+        } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+
+            sb.append("\ndescribe : ");
+            sb.append("网络不同导致定位失败，请检查网络是否通畅");
+            result = "网络不同导致定位失败，请检查网络是否通畅";
+        } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+
+            sb.append("\ndescribe : ");
+            sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+            result = "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机";
+        }
+
+        sb.append("\nlocationdescribe : ");
+        sb.append(location.getLocationDescribe());    //位置语义化信息
+
+        List<Poi> list = location.getPoiList();    // POI数据
+        if (list != null) {
+            sb.append("\npoilist size = : ");
+            sb.append(list.size());
+            for (Poi p : list) {
+                sb.append("\npoi= : ");
+                sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
+            }
+        }
+        mLocationClient.stop();
+        LatLng LocLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Double distance = DistanceUtil.getDistance(actLatLng, LocLatLng);
+        Log.d(MyAppConfig.TAG, "距离: " + distance + (distance < MAX_DISTANCE));
+        Log.i(TAG, sb.toString());
+        int Type = location.getLocType();
+        if (Type == BDLocation.TypeGpsLocation || location.getLocType() == BDLocation.TypeNetWorkLocation || location.getLocType() == BDLocation.TypeOffLineLocation) {
+            if (distance < MAX_DISTANCE) {
+                sign();
+            } else {
+                SuccinctProgress.dismiss();
+                Log.d(TAG, "onReceiveLocation: 距离太远");
+                MyUtils.showToast(mContext,"距离太远，无法签到");
+                    initState();
+            }
+        } else if (result.isEmpty()) {
+            SuccinctProgress.dismiss();
+            initState();
+            MyUtils.showToast(mContext, "定位失败");
+        } else {
+            SuccinctProgress.dismiss();
+            initState();
+            MyUtils.showToast(mContext, result);
+        }
+
+        Log.i(TAG, sb.toString());
+        Log.d(TAG, "==========取消定位");
+    }
     public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
+            ActivityDetailsActivity.this.location = location;
+            mHandler.sendEmptyMessage(1);
 
-            String result = "";
-            //获取定位结果
-            StringBuffer sb = new StringBuffer(256);
-
-            sb.append("time : ");
-            sb.append(location.getTime());    //获取定位时间
-
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());    //获取类型类型
-
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());    //获取纬度信息
-
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());    //获取经度信息
-
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());    //获取定位精准度
-
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-
-                // GPS定位结果
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());    // 单位：公里每小时
-
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());    //获取卫星数
-
-                sb.append("\nheight : ");
-                sb.append(location.getAltitude());    //获取海拔高度信息，单位米
-
-                sb.append("\ndirection : ");
-                sb.append(location.getDirection());    //获取方向信息，单位度
-
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());    //获取地址信息
-
-                sb.append("\ndescribe : ");
-                sb.append("gps定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-
-                // 网络定位结果
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());    //获取地址信息
-
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());    //获取运营商信息
-
-                sb.append("\ndescribe : ");
-                sb.append("网络定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-
-                // 离线定位结果
-                sb.append("\ndescribe : ");
-                sb.append("离线定位成功，离线定位结果也是有效的");
-
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
-
-                sb.append("\ndescribe : ");
-                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-                result = "服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因";
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-
-                sb.append("\ndescribe : ");
-                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-                result = "网络不同导致定位失败，请检查网络是否通畅";
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-
-                sb.append("\ndescribe : ");
-                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-                result = "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机";
-            }
-
-            sb.append("\nlocationdescribe : ");
-            sb.append(location.getLocationDescribe());    //位置语义化信息
-
-            List<Poi> list = location.getPoiList();    // POI数据
-            if (list != null) {
-                sb.append("\npoilist size = : ");
-                sb.append(list.size());
-                for (Poi p : list) {
-                    sb.append("\npoi= : ");
-                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-                }
-            }
-            mLocationClient.stop();
-            LatLng LocLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            Double distance = DistanceUtil.getDistance(actLatLng, LocLatLng);
-            Log.d(MyAppConfig.TAG, "距离: " + distance + (distance < MAX_DISTANCE));
-            Log.i(TAG, sb.toString());
-            int Type = location.getLocType();
-            if (Type == BDLocation.TypeGpsLocation || location.getLocType() == BDLocation.TypeNetWorkLocation || location.getLocType() == BDLocation.TypeOffLineLocation) {
-                if (distance < MAX_DISTANCE) {
-                    sign();
-                } else {
-                    SuccinctProgress.dismiss();
-                    Log.d(TAG, "onReceiveLocation: 距离太远");
-//                    Toast.makeText(mContext,"距离太远，无法签到",Toast.LENGTH_SHORT).show();
-                    MyUtils.showToast(mContext,"距离太远，无法签到");
-                    initState();
-                }
-            } else if (result.isEmpty()) {
-                SuccinctProgress.dismiss();
-                initState();
-                MyUtils.showToast(mContext, "定位失败");
-            } else {
-                SuccinctProgress.dismiss();
-                initData();
-                MyUtils.showToast(mContext, result);
-            }
-
-            Log.i(TAG, sb.toString());
-            Log.d(TAG, "==========取消定位");
         }
 
         @Override
