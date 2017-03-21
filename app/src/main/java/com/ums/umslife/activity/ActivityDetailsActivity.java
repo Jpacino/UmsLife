@@ -14,6 +14,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +28,7 @@ import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.baidu.platform.comapi.map.H;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.squareup.picasso.Picasso;
 import com.ums.umslife.R;
 import com.ums.umslife.bean.ActivityApplyBean;
 import com.ums.umslife.bean.ActivityBean;
@@ -55,6 +54,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.ums.umslife.fragment.ActivityFragment.PIC_BASE_URL;
+
 public class ActivityDetailsActivity extends BaseActivity implements
         OnClickListener {
     private TextView signTv, applyTv;
@@ -75,6 +76,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private TextView uploadTv;
     private Map<String, RequestBody> paramsMaps = new HashMap<>();
     private BDLocation location;
+    private LinearLayout moreLl;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -87,6 +89,8 @@ public class ActivityDetailsActivity extends BaseActivity implements
             }
         }
     };
+    private ImageView titleIv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,12 +123,15 @@ public class ActivityDetailsActivity extends BaseActivity implements
         stopTimeTv = (TextView) findViewById(R.id.endTime_tv);
         contentTv = (TextView) findViewById(R.id.content_tv);
         integralTv = (TextView) findViewById(R.id.integral_tv);
+        titleIv = (ImageView) findViewById(R.id.title_img_iv);
+        moreLl = (LinearLayout) findViewById(R.id.more_ll);
         mLocationClient = new LocationClient(getApplicationContext());
         myListener = new MyLocationListener();
         mLocationClient.registerLocationListener(myListener);
         signTv.setOnClickListener(this);
         applyTv.setOnClickListener(this);
         uploadTv.setOnClickListener(this);
+        moreLl.setOnClickListener(this);
         initLocation();
     }
 
@@ -136,6 +143,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
         phone = loginShare.getString("phone", "");
         activityNo = activitysBean.getActivityNo();
         integral = activitysBean.getIntegral();
+        Picasso.with(mContext).load(PIC_BASE_URL+activitysBean.getPicURL()).error(R.drawable.error_img).into(titleIv);
         String actLatLngStr = activitysBean.getLng_lat();
         if (!actLatLngStr.isEmpty()) {
             try {
@@ -174,7 +182,9 @@ public class ActivityDetailsActivity extends BaseActivity implements
             signTv.setVisibility(View.VISIBLE);
             uploadTv.setVisibility(View.GONE);
         }
-        Log.d(TAG, "initState: ==="+activitysBean.getJoinState());
+        if (activitysBean.getDetail().isEmpty()){
+            moreLl.setVisibility(View.GONE);
+        }
         if (activitysBean.getJoinState().isEmpty()) {
             applyState = "0";
             applyTv.setText("报名");
@@ -250,6 +260,9 @@ public class ActivityDetailsActivity extends BaseActivity implements
                 break;
             case R.id.tv_to_upload:
                 upload();
+                break;
+            case R.id.more_ll:
+                MyUtils.startAct(mContext,MoreDetailsActivity.class);
                 break;
             default:
                 break;
@@ -597,15 +610,6 @@ public class ActivityDetailsActivity extends BaseActivity implements
         }
     }
 
-    private void initImageLoader() {
-        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
-        config.threadPriority(Thread.NORM_PRIORITY - 2);
-        config.denyCacheImageMultipleSizesInMemory();
-        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
-        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
-        config.tasksProcessingOrder(QueueProcessingType.LIFO);
-        ImageLoader.getInstance().init(config.build());
-    }
 
 
     @Override

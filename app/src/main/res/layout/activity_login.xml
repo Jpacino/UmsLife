@@ -127,7 +127,7 @@
                     android:layout_gravity="center_vertical"
                     android:clickable="true"
                     android:padding="@dimen/dimen_5_dip"
-                    android:src="@drawable/not_choose1" />
+                    android:src="@drawable/not_choose" />
 
                 <TextView
                     android:layout_width="wrap_content"

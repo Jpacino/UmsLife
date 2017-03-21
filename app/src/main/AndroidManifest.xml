@@ -48,10 +48,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.ums.umslife.activity.RegisterActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.ums.umslife.activity.ActivityDetailsActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -73,6 +69,11 @@
         </activity>
         <activity
             android:name="com.ums.umslife.activity.ChangePasswordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ums.umslife.activity.MoreDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>

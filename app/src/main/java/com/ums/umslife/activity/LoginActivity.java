@@ -145,11 +145,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      */
     private void autoLogin(boolean isAuto) {
             if (isAuto) {
-                autoLoginIv.setImageResource(R.drawable.is_choose1);
+                autoLoginIv.setImageResource(R.drawable.is_choose);
 
 
             } else {
-            autoLoginIv.setImageResource(R.drawable.not_choose1);
+            autoLoginIv.setImageResource(R.drawable.not_choose);
         }
     }
 

@@ -42,7 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,OnBannerListener,SwipeRefreshLayout.OnRefreshListener {
-    private static final String PIC_BASE_URL = "http://172.16.87.212:8080/control/picture/";
+    public static final String PIC_BASE_URL = "http://172.16.87.212:8080/control/picture/";
     private TextView emptyTv;
     private RecyclerView activityRv;
     private Context mContext;
@@ -91,7 +91,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
         activityRv.setLayoutManager(new LinearLayoutManager(mContext));
         activityRv.setAdapter(actRvAdapter);
         banner.setOnBannerListener(this);
-//        setEmptyView(activityLists.size(), emptyTv);
+        setEmptyView(activityLists.size(), emptyTv);
     }
 
     private void initBanner() {
@@ -147,7 +147,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
                         }
                         actRvAdapter.notifyDataSetChanged();
 //                        swipeRefreshLayout.setRefreshing(false);
-//                        setEmptyView(activityLists.size(), emptyTv);
+                        setEmptyView(activityLists.size(), emptyTv);
                         MyUtils.complete1(swipeRefreshLayout);
                     }
 
@@ -159,7 +159,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
                                 "连接失败");
                         actRvAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
-//                        setEmptyView(activityLists.size(), emptyTv);
+                        setEmptyView(activityLists.size(), emptyTv);
 //                        MyUtils.complete(activityLv);
 
                     }
@@ -179,24 +179,6 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
 
     }
 
-    private OnItemClickListener menuItemClickListener = new OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            long currentTime = Calendar.getInstance().getTimeInMillis();
-            if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-                lastClickTime = currentTime;
-                Intent actDetailIt = new Intent(mContext,
-                        ActivityDetailsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("activitysBean", activityBean.getData().getAllActivityList().get(position - 2));
-                actDetailIt.putExtras(bundle);
-                startActivity(actDetailIt);
-            }
-        }
-
-    };
 
 
 
@@ -213,7 +195,6 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
         bundle.putSerializable("activitysBean", activityBean.getData().getAllActivityList().get(position));
         actDetailIt.putExtras(bundle);
         startActivity(actDetailIt);
-        MyUtils.showToast(mContext,position+"");
     }
 
     @Override

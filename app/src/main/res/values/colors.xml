@@ -20,5 +20,6 @@
     <color name="white">#ffffff</color>
     <color name="gray_txt">#666666</color>
     <color name="transparent">#FFFFFFFF</color>
+    <color name="blue">#1E90FF</color>
 
 </resources>

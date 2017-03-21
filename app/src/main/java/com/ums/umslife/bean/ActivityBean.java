@@ -11,9 +11,9 @@ public class ActivityBean implements Serializable {
 	 * reason : 查询成功
 	 */
 
-	private String code;
+	private String code= "";
 	private DataBean data;
-	private String reason;
+	private String reason= "";
 
 	public String getCode() {
 		return code;
@@ -92,27 +92,36 @@ public class ActivityBean implements Serializable {
 			 * updateTime : 1489457756000
 			 */
 
-			private String activityContent;
-			private String activityNo;
-			private String activityPlace;
-			private String activityTheme;
-			private String clubName;
-			private String clubNo;
+			private String activityContent= "";
+			private String activityNo= "";
+			private String activityPlace= "";
+			private String activityTheme= "";
+			private String clubName= "";
+			private String clubNo= "";
 			private long createTime;
-			private String endTime;
-			private String enrollment;
+			private String endTime= "";
+			private String enrollment= "";
 			private int flag;
-			private String integral;
-			private String isHot;
-			private String joinState;
-			private String lng_lat;
-			private String picURL;
-			private String signEndTime;
-			private String signStartTime;
-			private String sign_atta;
-			private String startTime;
-			private String stopTime;
+			private String integral= "";
+			private String isHot= "";
+			private String joinState= "";
+			private String lng_lat= "";
+			private String picURL= "";
+			private String signEndTime= "";
+			private String signStartTime= "";
+			private String sign_atta= "";
+			private String startTime= "";
+			private String stopTime= "";
+			private String detail = "";
 			private long updateTime;
+
+			public String getDetail() {
+				return detail;
+			}
+
+			public void setDetail(String detail) {
+				this.detail = detail;
+			}
 
 			public String getActivityContent() {
 				return activityContent;

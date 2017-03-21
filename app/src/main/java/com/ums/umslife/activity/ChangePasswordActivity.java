@@ -17,7 +17,6 @@ import com.ums.umslife.net.HttpUtils;
 import com.ums.umslife.utils.CountDownUtils2;
 import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
-import com.ums.umslife.view.LabelTextView;
 import com.ums.umslife.view.SuccinctProgress;
 
 import retrofit2.Call;
