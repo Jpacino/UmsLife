@@ -405,7 +405,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 changeAuthType(isOpen);
                 break;
             case R.id.forget_pwd_tv:
-                MyUtils.startAct(mContext, ChangePasswordActivity.class);
+//                MyUtils.startAct(mContext, ChangePasswordActivity.class);
+                MyUtils.startAct(mContext, MainActivity.class);
+
                 break;
         }
     }

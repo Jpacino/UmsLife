@@ -18,11 +18,6 @@
         <string name="activity_name">活动名称：</string>
         <string name="start_time">开始时间：</string>
         <string name="end_time">结束时间：</string>
-        <string name="activity_address">活动地点：</string>
-        <string name="activity_member">活动群体：</string>
-        <string name="activity_points">活动积分：</string>
-        <string name="activity_participate_count">已报名人数：</string>
-        <string name="mine_participate_state">是否报名：</string>
         <string name="to_participate">报名</string>
         <string name="to_sign_in">签到</string>
         <string name="activity_content_desc">活动内容：</string>
@@ -34,5 +29,11 @@
         <string name="message_login">验证码登录</string>
         <string name="pwd_login">密码登录</string>
         <string name="auto_login">自助登录</string>
+        <string name="my_act">我的活动</string>
+        <string name="my_club">我的俱乐部</string>
+        <string name="change_pwd">密码修改</string>
+        <string name="logout">注销</string>
+        <string name="integral_details">积分明细</string>
+
 
 </resources>
