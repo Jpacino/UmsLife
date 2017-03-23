@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/act_refresh"
+        android:id="@+id/refresh_act"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/activity_rv"
+            android:id="@+id/rv_act"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|top" />
@@ -18,7 +18,7 @@
 
 
     <TextView
-        android:id="@+id/empty_tv"
+        android:id="@+id/tv_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

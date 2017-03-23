@@ -1,4 +1,4 @@
-package com.ums.umslife.fragment;
+package com.ums.umslife.base;
 
 import android.app.Fragment;
 import android.os.Bundle;

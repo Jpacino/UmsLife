@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ums.umslife.R;
 import com.ums.umslife.adapter.ClubMemberListAdapter;
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.ClubApplyBean;
 import com.ums.umslife.bean.ClubBean;
 import com.ums.umslife.bean.ClubDetailBean;
@@ -25,17 +22,28 @@ import com.ums.umslife.view.SuccinctProgress;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClubDetailsActivity extends BaseActivity implements
-        OnClickListener {
+public class ClubDetailsActivity extends BaseActivity{
 
-    private TextView clubNameTv;
-    private TextView memberTv;
-    private TextView synopsisTv;
-    private TextView applyTv;
+    @BindView(R.id.iv_club_logo)
+    CircleImageView ivClubLogo;
+    @BindView(R.id.tv_club_name)
+    TextView tvClubName;
+    @BindView(R.id.tv_member)
+    TextView tvMember;
+    @BindView(R.id.tv_apply_btn)
+    TextView tvApplyBtn;
+    @BindView(R.id.tv_synopsis)
+    TextView tvSynopsis;
+    @BindView(R.id.lv_club_member)
+    ListView lvClubMember;
     private String phone, clubNo, applyState, applyState_out;
     private ClubDetailBean clubDetailBean;
     private ClubApplyBean clubApplyBean;
@@ -45,12 +53,12 @@ public class ClubDetailsActivity extends BaseActivity implements
     private Context mContext;
     private List<ClubDetailBean.ClubDetailsBean.ClubUserListBean> clubUserLists = new ArrayList<>();
     private ClubMemberListAdapter adapter;
-    private ListView lvClubMemberList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club_details);
+        ButterKnife.bind(this);
         init();
         initView();
         initData();
@@ -65,15 +73,8 @@ public class ClubDetailsActivity extends BaseActivity implements
 
 
     protected void initView() {
-        lvClubMemberList = (ListView) findViewById(R.id.lv_club_member_list);
-        clubNameTv = (TextView) findViewById(R.id.club_name_tv);
-        memberTv = (TextView) findViewById(R.id.member_tv);
-        synopsisTv = (TextView) findViewById(R.id.synopsis_tv);
-        applyTv = (TextView) findViewById(R.id.apply_tv);
         adapter = new ClubMemberListAdapter(clubUserLists);
-        lvClubMemberList.setAdapter(adapter);
-        applyTv.setOnClickListener(this);
-
+        lvClubMember.setAdapter(adapter);
     }
 
 
@@ -84,15 +85,15 @@ public class ClubDetailsActivity extends BaseActivity implements
         clubNo = clubsBean.getClubNo();
         SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
         phone = loginShare.getString("phone", "");
-        clubNameTv.setText(clubsBean.getClubName());
-        memberTv.setText(clubsBean.getMember());
-        synopsisTv.setText(clubsBean.getSynopsis());
+        tvClubName.setText(clubsBean.getClubName());
+        tvMember.setText(clubsBean.getMember());
+        tvSynopsis.setText(clubsBean.getSynopsis());
         initState();
-        loadData();
+        loadNetData();
 
     }
 
-    private void loadData() {
+    private void loadNetData() {
         HttpUtils.init().getClubDetailBean(phone, clubNo)
                 .enqueue(new Callback<ClubDetailBean>() {
                     @Override
@@ -136,42 +137,27 @@ public class ClubDetailsActivity extends BaseActivity implements
     private void initState() {
         if (applyState.isEmpty()) {
             applyState_out = "0";
-            applyTv.setText("加入");
-            applyTv.setClickable(true);
-            applyTv.setBackgroundResource(R.drawable.bt_count_down_bg_selector);
+            tvApplyBtn.setText("加入");
+            tvApplyBtn.setClickable(true);
+            tvApplyBtn.setBackgroundResource(R.drawable.bt_count_down_bg_selector);
         } else if (applyState.equals(IS_JOIN)) {
             applyState_out = "1";
-            applyTv.setText("已加入");
-            applyTv.setClickable(false);
-            applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+            tvApplyBtn.setText("已加入");
+            tvApplyBtn.setClickable(false);
+            tvApplyBtn.setBackgroundResource(R.drawable.bt_login_unable_shape);
         } else if (applyState.equals(CHECKING)) {
             applyState_out = "";
-            applyTv.setText("审核中");
-            applyTv.setClickable(false);
-            applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+            tvApplyBtn.setText("审核中");
+            tvApplyBtn.setClickable(false);
+            tvApplyBtn.setBackgroundResource(R.drawable.bt_login_unable_shape);
         } else if (applyState.equals(CHECK_NOT_PASS)) {
             applyState_out = "0";
-            applyTv.setText("未通过");
-            applyTv.setClickable(false);
-            applyTv.setBackgroundResource(R.drawable.bt_login_unable_shape);
+            tvApplyBtn.setText("未通过");
+            tvApplyBtn.setClickable(false);
+            tvApplyBtn.setBackgroundResource(R.drawable.bt_login_unable_shape);
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_base_back:
-                finish();
-                break;
-            case R.id.apply_tv:
-                apply();
-                break;
-
-            default:
-                break;
-        }
-
-    }
 
     private void apply() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
@@ -223,4 +209,8 @@ public class ClubDetailsActivity extends BaseActivity implements
     }
 
 
+    @OnClick(R.id.tv_apply_btn)
+    public void onClick() {
+        apply();
+    }
 }

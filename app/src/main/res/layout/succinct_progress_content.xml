@@ -5,18 +5,18 @@
     android:gravity="center" >
 
     <ImageView
-        android:id="@+id/progress_icon"
+        android:id="@+id/iv_progress_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-        android:src="@drawable/icon_progress_style4" />
+        android:src="@drawable/ic_progress_style4" />
 
     <TextView
-        android:id="@+id/progress_message"
+        android:id="@+id/tv_progress_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/progress_icon"
+        android:layout_below="@id/iv_progress_icon"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
         android:text="@string/hello_world"

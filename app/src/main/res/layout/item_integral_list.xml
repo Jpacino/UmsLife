@@ -4,39 +4,39 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:id="@+id/main_rl"
+        android:id="@+id/rl_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_10_dip" >
 
         <TextView
-            android:id="@+id/way_tv"
+            android:id="@+id/tv_way"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/integral_tv"
+            android:layout_toLeftOf="@+id/tv_integral"
             android:lines="1"
             android:text="活动签到"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/details_tv"
+            android:id="@+id/tv_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/way_tv"
+            android:layout_below="@id/tv_way"
             android:layout_marginTop="@dimen/dimen_2_dip"
-            android:layout_toLeftOf="@+id/time_tv"
+            android:layout_toLeftOf="@+id/tv_time"
             android:lines="1"
             android:text="健步走"
             android:textColor="@color/gray_txt"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/integral_tv"
+            android:id="@+id/tv_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/way_tv"
+            android:layout_alignBottom="@id/tv_way"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_3_dip"
             android:gravity="center"
@@ -45,10 +45,10 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/time_tv"
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/details_tv"
+            android:layout_alignBottom="@id/tv_details"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_3_dip"
             android:text="2010-02-02"
@@ -60,7 +60,7 @@
         android:id="@+id/view_line"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:layout_below="@id/main_rl"
+        android:layout_below="@id/rl_main"
         android:background="@color/line" />
 
 </RelativeLayout>

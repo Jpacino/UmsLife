@@ -23,9 +23,9 @@ import com.ums.umslife.R;
  */
 public class SuccinctProgress {
 
-	private static int[] iconStyles = { R.drawable.icon_progress_style1,
-			R.drawable.icon_progress_style2, R.drawable.icon_progress_style3,
-			R.drawable.icon_progress_style4 };
+	private static int[] iconStyles = { R.drawable.ic_progress_style1,
+			R.drawable.ic_progress_style2, R.drawable.ic_progress_style3,
+			R.drawable.ic_progress_style4};
 	private static ProgressDialog pd;
 	/** ICON 为太极 */
 	public static final int THEME_ULTIMATE = 0;
@@ -51,11 +51,11 @@ public class SuccinctProgress {
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.succinct_progress_content, null);
 		ImageView mProgressIcon = (ImageView) view
-				.findViewById(R.id.progress_icon);
+				.findViewById(R.id.iv_progress_icon);
 		// 设置样式
 		mProgressIcon.setImageResource(iconStyles[theme]);
 		TextView mProgressMessage = (TextView) view
-				.findViewById(R.id.progress_message);
+				.findViewById(R.id.tv_progress_message);
 		// 设置内容
 		mProgressMessage.setText(message);
 		new AnimationUtils();

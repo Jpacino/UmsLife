@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,10 +14,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ums.umslife.R;
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.LoginResponseBean;
 import com.ums.umslife.bean.SendMsgBean;
 import com.ums.umslife.net.HttpUtils;
@@ -28,20 +27,32 @@ import com.ums.umslife.utils.MyUtils;
 import com.ums.umslife.utils.NetHelper;
 import com.ums.umslife.view.SuccinctProgress;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.countDown;
-
 public class LoginActivity extends BaseActivity implements OnClickListener {
-    private Button btSendAuthCode;
+    @BindView(R.id.et_account)
+    MaterialEditText etAccount;
+    @BindView(R.id.et_pwd)
+    MaterialEditText etPwd;
+    @BindView(R.id.bt_send_auth_code)
+    Button btSendAuthCode;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
+    @BindView(R.id.iv_auto_login)
+    ImageView ivAutoLogin;
+    @BindView(R.id.tv_login_type)
+    TextView tvLoginType;
+    @BindView(R.id.forget_pwd_tv)
+    TextView forgetPwdTv;
+    @BindView(R.id.ll_auto_login)
+    LinearLayout llAutoLogin;
     private CountDownUtils countDownUtils;
-    private TextView loginTypeTv;
-    private ImageView autoLoginIv;
-    private LinearLayout autoLoginLl;
     private boolean isOpen = false, isAuto;
-    private MaterialEditText accountEt, pwdEt;
     private SharedPreferences loginShare;
     private SharedPreferences autoShare;
     private String phone = "", user_pwd = "";
@@ -51,12 +62,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private Context mContext;
     private Intent loginIt;
     private SendMsgBean sendMsgBean;
-    private TextView forgetPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
         init();
         initView();
         initData();
@@ -66,24 +77,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     protected void init() {
         mContext = LoginActivity.this;
         loginIt = getIntent();
-        noToolbar();
+        hideToolbar();
     }
 
 
     protected void initView() {
-        accountEt = (MaterialEditText) findViewById(R.id.account_et);
-        pwdEt = (MaterialEditText) findViewById(R.id.pwd_et);
-        btSendAuthCode = (Button) findViewById(R.id.bt_send_auth_code);
-        Button loginBtn = (Button) findViewById(R.id.btn_login);
-        loginTypeTv = (TextView) findViewById(R.id.tv_login_type);
-        autoLoginIv = (ImageView) findViewById(R.id.iv_auto_login);
-        autoLoginLl = (LinearLayout) findViewById(R.id.ll_auto_login);
-        forgetPwd = (TextView) findViewById(R.id.forget_pwd_tv);
-        loginTypeTv.setOnClickListener(this);
-        btSendAuthCode.setOnClickListener(this);
-        autoLoginIv.setOnClickListener(this);
-        loginBtn.setOnClickListener(this);
-        forgetPwd.setOnClickListener(this);
     }
 
 
@@ -106,8 +104,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private void loadLoginData(String phone, String user_pwd, boolean isAuto) {
         if (isAuto && !phone.isEmpty()) {
-            accountEt.setText(phone);
-            pwdEt.setText(user_pwd);
+            etAccount.setText(phone);
+            etPwd.setText(user_pwd);
             login();
         }
     }
@@ -118,22 +116,22 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private void changeAuthType(boolean isOpen) {
         if (isOpen) {
 
-            pwdEt.setHint("请输入验证码");
-            pwdEt.setInputType(InputType.TYPE_CLASS_NUMBER);
-            autoLoginLl.setVisibility(View.INVISIBLE);
+            etPwd.setHint("请输入验证码");
+            etPwd.setInputType(InputType.TYPE_CLASS_NUMBER);
+            llAutoLogin.setVisibility(View.INVISIBLE);
             btSendAuthCode.setVisibility(View.VISIBLE);
-            loginTypeTv.setText("密码登录");
-            pwdEt.setIconLeft(R.drawable.verification);
-            pwdEt.setFloatingLabelText("验证码");
+            tvLoginType.setText("密码登录");
+            etPwd.setIconLeft(R.drawable.ic_verification);
+            etPwd.setFloatingLabelText("验证码");
         } else {
-            pwdEt.setHint("请输入密码");
-            pwdEt.setInputType(InputType.TYPE_CLASS_TEXT
+            etPwd.setHint("请输入密码");
+            etPwd.setInputType(InputType.TYPE_CLASS_TEXT
                     | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             btSendAuthCode.setVisibility(View.GONE);
-            loginTypeTv.setText("验证码登录");
-            autoLoginLl.setVisibility(View.VISIBLE);
-            pwdEt.setIconLeft(R.drawable.password);
-            pwdEt.setFloatingLabelText("密码");
+            tvLoginType.setText("验证码登录");
+            llAutoLogin.setVisibility(View.VISIBLE);
+            etPwd.setIconLeft(R.drawable.ic_login_password);
+            etPwd.setFloatingLabelText("密码");
         }
 
     }
@@ -144,12 +142,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      * @param isAuto 自动登录是否
      */
     private void autoLogin(boolean isAuto) {
-            if (isAuto) {
-                autoLoginIv.setImageResource(R.drawable.is_choose);
+        if (isAuto) {
+            ivAutoLogin.setImageResource(R.drawable.ic_login_is_choose);
 
 
-            } else {
-            autoLoginIv.setImageResource(R.drawable.not_choose);
+        } else {
+            ivAutoLogin.setImageResource(R.drawable.ic_login_not_choose);
         }
     }
 
@@ -166,46 +164,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         editor.apply();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_send_auth_code:
-                size = accountEt.getText().toString().trim().length();
-                if (size == 11) {
-                    sendMsg();
-                } else {
-                    MyUtils.showToast(mContext, "请输入11位手机号");
-                }
-                break;
-            case R.id.btn_login:
-                login();
-                break;
-            case R.id.tv_login_type:
-                isOpen = !isOpen;
-                pwdEt.setText("");
-                changeAuthType(isOpen);
 
-                break;
-            case R.id.iv_auto_login:
-                isAuto = !isAuto;
-                autoLogin(isAuto);
-                break;
-            case R.id.forget_pwd_tv:
-//                MyUtils.startAct(mContext,ChangePasswordActivity.class);
-                MyUtils.startAct(mContext,MainActivity.class);
-                break;
-
-            default:
-                break;
-        }
-    }
 
     /**
      * 发送验证接口
      */
     private void sendMsg() {
         countDownUtils.startCountDown();
-        phone = accountEt.getText().toString();
+        phone = etAccount.getText().toString();
         HttpUtils.init().getSendMsgBean(phone)
                 .enqueue(new Callback<SendMsgBean>() {
                     @Override
@@ -253,12 +219,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      * 判断登录方式
      */
     private void login() {
-        size = accountEt.getText().toString().trim().length();
+        size = etAccount.getText().toString().trim().length();
         if (NetHelper.IsHaveInternet(this)) { // 判断是否联网
 
             if (!isOpen) {
                 if (size == 11) {
-                    if (pwdEt.getText().toString().isEmpty()) {
+                    if (etPwd.getText().toString().isEmpty()) {
                         MyUtils.showToast(mContext, "请输入密码");
                     } else {
                         pwdLogin();
@@ -268,7 +234,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 }
             } else {
                 if (size == 11) {
-                    if (pwdEt.getText().toString().isEmpty()) {
+                    if (etPwd.getText().toString().isEmpty()) {
                         MyUtils.showToast(mContext, "请输入验证码");
                     } else {
                         msgLogin();
@@ -289,8 +255,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private void msgLogin() {
         SuccinctProgress.showSuccinctProgress(mContext, "正在登录···",
                 SuccinctProgress.THEME_ARC, false, false);
-        phone = accountEt.getText().toString();
-        user_pwd = pwdEt.getText().toString();
+        phone = etAccount.getText().toString();
+        user_pwd = etPwd.getText().toString();
         HttpUtils.init().getLoginResponseBean2(phone, user_pwd)
                 .enqueue(new Callback<LoginResponseBean>() {
 
@@ -340,8 +306,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private void pwdLogin() {
         SuccinctProgress.showSuccinctProgress(mContext, "正在登录···",
                 SuccinctProgress.THEME_ARC, false, false);
-        phone = accountEt.getText().toString();
-        user_pwd = pwdEt.getText().toString();
+        phone = etAccount.getText().toString();
+        user_pwd = etPwd.getText().toString();
         HttpUtils.init().getLoginResponseBean(phone, user_pwd)
                 .enqueue(new Callback<LoginResponseBean>() {
 
@@ -415,4 +381,32 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         super.onDestroy();
     }
 
+    @OnClick({R.id.bt_send_auth_code, R.id.btn_login, R.id.iv_auto_login, R.id.tv_login_type, R.id.forget_pwd_tv})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_send_auth_code:
+                size = etAccount.getText().toString().trim().length();
+                if (size == 11) {
+                    sendMsg();
+                } else {
+                    MyUtils.showToast(mContext, "请输入11位手机号");
+                }
+                break;
+            case R.id.btn_login:
+                login();
+                break;
+            case R.id.iv_auto_login:
+                isAuto = !isAuto;
+                autoLogin(isAuto);
+                break;
+            case R.id.tv_login_type:
+                isOpen = !isOpen;
+                etPwd.setText("");
+                changeAuthType(isOpen);
+                break;
+            case R.id.forget_pwd_tv:
+                MyUtils.startAct(mContext, ChangePasswordActivity.class);
+                break;
+        }
+    }
 }

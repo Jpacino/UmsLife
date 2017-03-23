@@ -1,7 +1,6 @@
 package com.ums.umslife.activity;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.R;
 import com.ums.umslife.fragment.ActivityFragment;
 import com.ums.umslife.fragment.ClubFragment;
@@ -21,7 +21,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity
          {
 
-    private RadioGroup rgFirstMain;
+    private RadioGroup rgMain;
     private List<Fragment> mFragments = new ArrayList<>();
     private List<String> titles = new ArrayList<>();
     private long exitTime;
@@ -46,8 +46,8 @@ public class MainActivity extends BaseActivity
 
 
     protected void initView() {
-        rgFirstMain = (RadioGroup) findViewById(R.id.rg_first_main);
-        rgFirstMain.setOnCheckedChangeListener(mCheckListener);
+        rgMain = (RadioGroup) findViewById(R.id.rg_main);
+        rgMain.setOnCheckedChangeListener(mCheckListener);
     }
 
     protected void initData() {
@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity
         mFragments.add(activityFragment);
         mFragments.add(clubFragment);
         mFragments.add(mineFragment);
-        ((RadioButton) rgFirstMain.getChildAt(0)).setChecked(true);
+        ((RadioButton) rgMain.getChildAt(0)).setChecked(true);
     }
     /**
      * 监听事件
@@ -69,6 +69,11 @@ public class MainActivity extends BaseActivity
             Fragment fragment = mFragments.get(index);
             ctrlFragment(fragment);
             setTitle(titles.get(index));
+            if (index ==2 ){
+                hideToolbar();
+            }else {
+                showToolbar();
+            }
         }
     };
 

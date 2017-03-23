@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
 <com.youth.banner.Banner
-    android:id="@+id/act_banner"
+    android:id="@+id/banner_act"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_150_dip">
 

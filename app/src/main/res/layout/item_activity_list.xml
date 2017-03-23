@@ -4,39 +4,39 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
-        android:id="@+id/main_rl"
+        android:id="@+id/rl_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_10_dip" >
 
         <TextView
-            android:id="@+id/tv_activity_name"
+            android:id="@+id/tv_act_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/tv_activity_joinState"
+            android:layout_toLeftOf="@+id/tv_joinState"
             android:lines="1"
             android:text="南京银商春季马拉松"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tv_activity_club"
+            android:id="@+id/tv_club_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/tv_activity_name"
+            android:layout_below="@id/tv_act_name"
             android:layout_marginTop="@dimen/dimen_2_dip"
-            android:layout_toLeftOf="@+id/tv_activity_joinState"
+            android:layout_toLeftOf="@+id/tv_joinState"
             android:lines="1"
             android:text="昂跑马拉松俱乐部"
             android:textColor="@color/gray_txt"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/tv_activity_joinState"
+            android:id="@+id/tv_joinState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_activity_name"
+            android:layout_alignBottom="@id/tv_act_name"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_3_dip"
             android:text="已签到"
@@ -44,10 +44,10 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tv_activity_count"
+            android:id="@+id/tv_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_activity_club"
+            android:layout_alignBottom="@id/tv_club_name"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_3_dip"
             android:text="22分"
@@ -58,7 +58,7 @@
         android:id="@+id/view_line"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:layout_below="@id/main_rl"
+        android:layout_below="@id/rl_main"
         android:background="@color/line" />
 
 </RelativeLayout>

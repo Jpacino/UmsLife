@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/s_logo" />
+                android:src="@drawable/img_ums_logo" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -30,7 +30,7 @@
             android:paddingRight="@dimen/dimen_10_dip">
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/account_et"
+                android:id="@+id/et_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -43,7 +43,7 @@
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="手机号"
                 app:met_hideUnderline="true"
-                app:met_iconLeft="@drawable/account"
+                app:met_iconLeft="@drawable/ic_login_account"
                 app:met_primaryColor="@color/red_main" />
         </RelativeLayout>
 
@@ -61,7 +61,7 @@
             android:paddingRight="@dimen/dimen_10_dip">
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/pwd_et"
+                android:id="@+id/et_pwd"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -74,7 +74,7 @@
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="密码"
                 app:met_hideUnderline="true"
-                app:met_iconLeft="@drawable/password"
+                app:met_iconLeft="@drawable/ic_login_password"
                 app:met_primaryColor="@color/red_main" />
 
 
@@ -127,7 +127,7 @@
                     android:layout_gravity="center_vertical"
                     android:clickable="true"
                     android:padding="@dimen/dimen_5_dip"
-                    android:src="@drawable/not_choose" />
+                    android:src="@drawable/ic_login_not_choose" />
 
                 <TextView
                     android:layout_width="wrap_content"

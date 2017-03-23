@@ -38,8 +38,8 @@ public class ClubMemberListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CommonViewHolder viewHolder = CommonViewHolder.createCVH(convertView,
 				parent, R.layout.item_club_member_list);
-		TextView nameTv = viewHolder.getTv(R.id.member_name_tv);
-		TextView phoneTv = viewHolder.getTv(R.id.member_phone_tv);
+		TextView nameTv = viewHolder.getTv(R.id.tv_member_name);
+		TextView phoneTv = viewHolder.getTv(R.id.tv_member_phone);
 		nameTv.setText(clubUserLists.get(position).getUserName());
 		phoneTv.setText(clubUserLists.get(position).getPhone());
 		return viewHolder.convertView;

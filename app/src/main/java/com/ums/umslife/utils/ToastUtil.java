@@ -206,4 +206,15 @@ public class ToastUtil {
 	public Toast getToast() {
 		return toast;
 	}
+	/**
+	 *toast取消
+	 */
+	public static void cancel(){
+
+		if(toast != null){
+			toast.cancel();
+			toast = null;
+		}
+
+	}
 }

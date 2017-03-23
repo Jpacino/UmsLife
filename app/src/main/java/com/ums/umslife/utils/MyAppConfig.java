@@ -7,5 +7,7 @@ public class MyAppConfig {
 	public final static String ONE_CODE = "1";
 	public final static String TWO_CODE = "2";
 	public final static String THREE_CODE = "3";
+	public final static int ALL_ACT_CODE = 1;
+	public final static int HOT_ACT_CODE = 2;
 	
 }

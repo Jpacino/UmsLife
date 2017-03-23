@@ -13,10 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +28,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.squareup.picasso.Picasso;
 import com.ums.umslife.R;
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.ActivityApplyBean;
 import com.ums.umslife.bean.ActivityBean;
 import com.ums.umslife.bean.ActivitySignBean;
@@ -44,6 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
 import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
 import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
@@ -56,15 +58,40 @@ import retrofit2.Response;
 
 import static com.ums.umslife.fragment.ActivityFragment.PIC_BASE_URL;
 
-public class ActivityDetailsActivity extends BaseActivity implements
-        OnClickListener {
-    private TextView signTv, applyTv;
+public class ActivityDetailsActivity extends BaseActivity {
+    @BindView(R.id.iv_title)
+    ImageView ivTitle;
+    @BindView(R.id.tv_act_name)
+    TextView tvActName;
+    @BindView(R.id.tv_club_name)
+    TextView tvClubName;
+    @BindView(R.id.tv_apply)
+    TextView tvApply;
+    @BindView(R.id.tv_sign)
+    TextView tvSign;
+    @BindView(R.id.tv_upload)
+    TextView tvUpload;
+    @BindView(R.id.tv_signStartTime)
+    TextView tvSignStartTime;
+    @BindView(R.id.tv_signEndTime)
+    TextView tvSignEndTime;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.tv_integral)
+    TextView tvIntegral;
+    @BindView(R.id.tv_member)
+    TextView tvMember;
+    @BindView(R.id.tv_endTime)
+    TextView tvEndTime;
+    @BindView(R.id.ll_more)
+    LinearLayout llMore;
+    @BindView(R.id.tv_content)
+    TextView tvContent;
     private final static String IS_SIGN = "1";
     private final static String NOT_SIGN = "0";
     private final static Double MAX_DISTANCE = 1000.00;
-    private ActivityBean.DataBean.AllActivityListBean activitysBean;
-    private TextView themeTv, clubNameTv, signStartTimeTv, signEndTimeTv,
-            placeTv, enrollmentTv, stopTimeTv, contentTv, integralTv;
+    private ActivityBean.DataBean.AllActivityListBean allActListBean = new ActivityBean.DataBean.AllActivityListBean();
+    private ActivityBean.DataBean.HotActivityListBean hotActListBean = new ActivityBean.DataBean.HotActivityListBean();
     private ActivityApplyBean applyBean;
     private ActivitySignBean signBean = new ActivitySignBean();
     private Context mContext;
@@ -73,29 +100,29 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private LocationClient mLocationClient = null;
     private LatLng actLatLng;
     private Double actLat = 0.00, actLng = 0.00;
-    private TextView uploadTv;
     private Map<String, RequestBody> paramsMaps = new HashMap<>();
     private BDLocation location;
-    private LinearLayout moreLl;
-    private Handler mHandler = new Handler(){
+    private String theme, signStartTime, signEndTime, enrollment,
+            stopTime, content, picUrl, actLatLngStr, clubNo, signAtta, place, clubName, details, joinState;
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
-            checkResult(location);
+                    checkResult(location);
                     break;
 
             }
         }
     };
-    private ImageView titleIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_act_details);
+        ButterKnife.bind(this);
         init();
         initView();
         initData();
@@ -111,40 +138,66 @@ public class ActivityDetailsActivity extends BaseActivity implements
     }
 
     protected void initView() {
-        signTv = (TextView) findViewById(R.id.tv_to_sign);
-        applyTv = (TextView) findViewById(R.id.tv_apply);
-        uploadTv = (TextView) findViewById(R.id.tv_to_upload);
-        themeTv = (TextView) findViewById(R.id.activity_name_tv);
-        clubNameTv = (TextView) findViewById(R.id.club_tv);
-        signStartTimeTv = (TextView) findViewById(R.id.signStartTime_tv);
-        signEndTimeTv = (TextView) findViewById(R.id.signEndTime_tv);
-        enrollmentTv = (TextView) findViewById(R.id.member_tv);
-        placeTv = (TextView) findViewById(R.id.address_tv);
-        stopTimeTv = (TextView) findViewById(R.id.endTime_tv);
-        contentTv = (TextView) findViewById(R.id.content_tv);
-        integralTv = (TextView) findViewById(R.id.integral_tv);
-        titleIv = (ImageView) findViewById(R.id.title_img_iv);
-        moreLl = (LinearLayout) findViewById(R.id.more_ll);
         mLocationClient = new LocationClient(getApplicationContext());
         myListener = new MyLocationListener();
         mLocationClient.registerLocationListener(myListener);
-        signTv.setOnClickListener(this);
-        applyTv.setOnClickListener(this);
-        uploadTv.setOnClickListener(this);
-        moreLl.setOnClickListener(this);
         initLocation();
     }
 
     protected void initData() {
         Intent actDetailIt = getIntent();
-        activitysBean = (ActivityBean.DataBean.AllActivityListBean) actDetailIt
-                .getSerializableExtra("activitysBean");
         SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
         phone = loginShare.getString("phone", "");
-        activityNo = activitysBean.getActivityNo();
-        integral = activitysBean.getIntegral();
-        Picasso.with(mContext).load(PIC_BASE_URL+activitysBean.getPicURL()).error(R.drawable.error_img).into(titleIv);
-        String actLatLngStr = activitysBean.getLng_lat();
+        if (actDetailIt.getIntExtra("code", 3) == MyAppConfig.ALL_ACT_CODE) {
+            allActListBean = (ActivityBean.DataBean.AllActivityListBean) actDetailIt
+                    .getSerializableExtra("allActListBean");
+            activityNo = allActListBean.getActivityNo();
+            integral = allActListBean.getIntegral();
+            picUrl = PIC_BASE_URL + allActListBean.getPicURL();
+            theme = allActListBean.getActivityTheme();
+            signStartTime = allActListBean.getSignStartTime();
+            signEndTime = allActListBean.getSignEndTime();
+            enrollment = allActListBean.getEnrollment();
+            stopTime = allActListBean.getStopTime();
+            integral = allActListBean.getIntegral();
+            content = allActListBean.getActivityContent();
+            actLatLngStr = allActListBean.getLng_lat();
+            Log.d(TAG, "initData: " + actLatLngStr);
+            clubNo = allActListBean.getClubNo();
+            place = allActListBean.getActivityPlace();
+            signAtta = allActListBean.getSign_atta();
+            clubName = allActListBean.getClubName();
+            details = allActListBean.getDetail();
+            joinState = allActListBean.getJoinState();
+        } else if (actDetailIt.getIntExtra("code", 3) == MyAppConfig.HOT_ACT_CODE) {
+            hotActListBean = (ActivityBean.DataBean.HotActivityListBean) actDetailIt
+                    .getSerializableExtra("hotActListBean");
+            activityNo = hotActListBean.getActivityNo();
+            integral = hotActListBean.getIntegral();
+            picUrl = PIC_BASE_URL + hotActListBean.getPicURL();
+            theme = hotActListBean.getActivityTheme();
+            signStartTime = hotActListBean.getSignStartTime();
+            signEndTime = hotActListBean.getSignEndTime();
+            enrollment = hotActListBean.getEnrollment();
+            stopTime = hotActListBean.getStopTime();
+            integral = hotActListBean.getIntegral();
+            content = hotActListBean.getActivityContent();
+            actLatLngStr = hotActListBean.getLng_lat();
+            clubNo = hotActListBean.getClubNo();
+            place = hotActListBean.getActivityPlace();
+            signAtta = hotActListBean.getSign_atta();
+            clubName = hotActListBean.getClubName();
+            details = hotActListBean.getDetail();
+            joinState = hotActListBean.getJoinState();
+        }
+    }
+
+
+    /**
+     * 初始化状态
+     */
+    private void initState() {
+        Picasso.with(mContext).load(picUrl).error(R.drawable.bg_error_img).into(ivTitle);
         if (!actLatLngStr.isEmpty()) {
             try {
                 actLat = Double.valueOf(actLatLngStr.substring(0, actLatLngStr.indexOf(",")));
@@ -154,55 +207,49 @@ public class ActivityDetailsActivity extends BaseActivity implements
             }
         }
         actLatLng = new LatLng(actLat, actLng);
-    }
-
-
-
-    /**
-     * 初始化报名和签到的状态
-     */
-    private void initState() {
-        themeTv.setText(activitysBean.getActivityTheme());
-        signStartTimeTv.setText(activitysBean.getSignStartTime());
-        signEndTimeTv.setText(activitysBean.getSignEndTime());
-        enrollmentTv.setText(activitysBean.getEnrollment());
-        stopTimeTv.setText(activitysBean.getStopTime());
-        integralTv.setText(activitysBean.getIntegral());
-        contentTv.setText(activitysBean.getActivityContent());
-        if (activitysBean.getClubNo().equals("0")) {
-            clubNameTv.setText("全体成员");
+        tvActName.setText(theme);
+        tvSignStartTime.setText(signStartTime);
+        tvSignEndTime.setText(signEndTime);
+        tvMember.setText(enrollment);
+        tvEndTime.setText(stopTime);
+        tvIntegral.setText(integral);
+        tvContent.setText(content);
+        tvAddress.setText(place);
+        if (clubNo.equals("0")) {
+            tvClubName.setText("全体成员");
         } else {
-            clubNameTv.setText(activitysBean.getClubName());
+            tvClubName.setText(clubName);
         }
-        placeTv.setText(activitysBean.getActivityPlace());
-        if (activitysBean.getSign_atta().equals(MyAppConfig.ONE_CODE)) {
-            signTv.setVisibility(View.GONE);
-            uploadTv.setVisibility(View.VISIBLE);
+        if (signAtta.equals(MyAppConfig.ONE_CODE)) {
+            tvSign.setVisibility(View.GONE);
+            tvUpload.setVisibility(View.VISIBLE);
         } else {
-            signTv.setVisibility(View.VISIBLE);
-            uploadTv.setVisibility(View.GONE);
+            tvSign.setVisibility(View.VISIBLE);
+            tvUpload.setVisibility(View.GONE);
         }
-        if (activitysBean.getDetail().isEmpty()){
-            moreLl.setVisibility(View.GONE);
+        if (details.isEmpty()) {
+            llMore.setVisibility(View.GONE);
         }
-        if (activitysBean.getJoinState().isEmpty()) {
+        if (joinState.isEmpty()) {
             applyState = "0";
-            applyTv.setText("报名");
-            applyTv.setEnabled(true);
-            signTv.setText("签到");
-            signTv.setEnabled(false);
-        } else if (activitysBean.getJoinState().equals(NOT_SIGN)) {
+            tvApply.setText("报名");
+            tvApply.setEnabled(true);
+            tvSign.setText("签到");
+            tvSign.setEnabled(false);
+            tvUpload.setEnabled(false);
+        } else if (joinState.equals(NOT_SIGN)) {
             applyState = "1";
-            applyTv.setText("取消报名");
-            applyTv.setEnabled(true);
-            signTv.setText("签到");
-            signTv.setEnabled(true);
-        } else if (activitysBean.getJoinState().equals(IS_SIGN)) {
+            tvApply.setText("取消报名");
+            tvApply.setEnabled(true);
+            tvSign.setText("签到");
+            tvSign.setEnabled(true);
+            tvUpload.setEnabled(true);
+        } else if (joinState.equals(IS_SIGN)) {
             applyState = "1";
-            applyTv.setText("取消报名");
-            applyTv.setEnabled(false);
-            signTv.setText("已签到");
-            signTv.setEnabled(false);
+            tvApply.setText("取消报名");
+            tvApply.setEnabled(false);
+            tvSign.setText("已签到");
+            tvSign.setEnabled(false);
         }
 
     }
@@ -246,28 +293,6 @@ public class ActivityDetailsActivity extends BaseActivity implements
         mLocationClient.setLocOption(option);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_base_back:
-                finish();
-                break;
-            case R.id.tv_to_sign:
-                location();
-                break;
-            case R.id.tv_apply:
-                apply();
-                break;
-            case R.id.tv_to_upload:
-                upload();
-                break;
-            case R.id.more_ll:
-                MyUtils.startAct(mContext,MoreDetailsActivity.class);
-                break;
-            default:
-                break;
-        }
-    }
 
     private void upload() {
         RxGalleryFinal.with(mContext)
@@ -300,7 +325,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
                                     if (signBean != null) {
                                         switch (signBean.getCode()) {
                                             case MyAppConfig.SUCCESS_CODE:
-                                                activitysBean.setJoinState(IS_SIGN);
+
                                                 MyUtils.showToast(mContext,
                                                         "" + signBean.getReason());
                                                 break;
@@ -345,7 +370,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private void location() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
-        signTv.setEnabled(false);
+        tvSign.setEnabled(false);
         //检查权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -384,7 +409,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
     private void apply() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
-        applyTv.setEnabled(false);
+        tvApply.setEnabled(false);
         Call<ActivityApplyBean> call = HttpUtils.init().getActivityApplyBean(
                 phone, activityNo, applyState);
         call.enqueue(new Callback<ActivityApplyBean>() {
@@ -396,9 +421,9 @@ public class ActivityDetailsActivity extends BaseActivity implements
 
                     switch (applyBean.getCode()) {
                         case MyAppConfig.SUCCESS_CODE:
-                            activitysBean.setJoinState(applyBean.getData()
-                                    .getJoinState());
-                            activitysBean.setEnrollment(applyBean.getData().getEnrollment());
+                            joinState = applyBean.getData()
+                                    .getJoinState();
+                            enrollment = applyBean.getData().getEnrollment();
                             MyUtils.showToast(mContext, "" + applyBean.getReason());
                             break;
                         case MyAppConfig.DEFEAT_CODE:
@@ -444,7 +469,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
                         if (signBean != null) {
                             switch (signBean.getCode()) {
                                 case MyAppConfig.SUCCESS_CODE:
-                                    activitysBean.setJoinState(IS_SIGN);
+                                    joinState = IS_SIGN;
                                     MyUtils.showToast(mContext,
                                             "" + signBean.getReason());
                                     break;
@@ -479,10 +504,10 @@ public class ActivityDetailsActivity extends BaseActivity implements
     }
 
 
-    private void checkResult(BDLocation location){
+    private void checkResult(BDLocation location) {
         String result = "";
         //获取定位结果
-        StringBuffer sb = new StringBuffer(256);
+        StringBuilder sb = new StringBuilder(256);
 
         sb.append("time : ");
         sb.append(location.getTime());    //获取定位时间
@@ -564,7 +589,7 @@ public class ActivityDetailsActivity extends BaseActivity implements
             sb.append(list.size());
             for (Poi p : list) {
                 sb.append("\npoi= : ");
-                sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
+                sb.append(p.getId()).append(" ").append(p.getName()).append(" ").append(p.getRank());
             }
         }
         mLocationClient.stop();
@@ -578,9 +603,8 @@ public class ActivityDetailsActivity extends BaseActivity implements
                 sign();
             } else {
                 SuccinctProgress.dismiss();
-                Log.d(TAG, "onReceiveLocation: 距离太远");
-                MyUtils.showToast(mContext,"距离太远，无法签到");
-                    initState();
+                MyUtils.showToast(mContext, "距离太远，无法签到");
+                initState();
             }
         } else if (result.isEmpty()) {
             SuccinctProgress.dismiss();
@@ -593,8 +617,27 @@ public class ActivityDetailsActivity extends BaseActivity implements
         }
 
         Log.i(TAG, sb.toString());
-        Log.d(TAG, "==========取消定位");
     }
+
+    @OnClick({R.id.tv_apply, R.id.tv_sign, R.id.tv_upload, R.id.ll_more})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_apply:
+                apply();
+                break;
+            case R.id.tv_sign:
+                location();
+                break;
+            case R.id.tv_upload:
+                upload();
+                break;
+            case R.id.ll_more:
+                MyUtils.startAct(mContext, MoreDetailsActivity.class);
+                break;
+        }
+    }
+
+
     public class MyLocationListener implements BDLocationListener {
 
         @Override
@@ -609,7 +652,6 @@ public class ActivityDetailsActivity extends BaseActivity implements
 
         }
     }
-
 
 
     @Override

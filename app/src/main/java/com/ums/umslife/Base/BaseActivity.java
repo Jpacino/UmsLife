@@ -1,10 +1,11 @@
-package com.ums.umslife.activity;
+package com.ums.umslife.base;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -68,7 +69,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             });
         } else {
-//			Logger.t(TAG).e("back is null ,please check out");
         }
 
     }
@@ -98,17 +98,27 @@ public abstract class BaseActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         }
-        back = (ImageView) findViewById(R.id.img_back);
-        title = (TextView) findViewById(R.id.title);
+        back = (ImageView) findViewById(R.id.iv_back);
+        title = (TextView) findViewById(R.id.tv_title);
     }
 
     /**
      * 不显示ToolBar
      */
-    protected void noToolbar() {
+    protected void hideToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-        toolbar.setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
+        }
+
+    }
+    /**
+     * 显示ToolBar
+     */
+    protected void showToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setVisibility(View.VISIBLE);
         }
 
     }
@@ -126,5 +136,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         initToolbar();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
 }

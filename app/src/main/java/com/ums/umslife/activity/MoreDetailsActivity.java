@@ -11,10 +11,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.R;
 
 /**
- * Created by wujia on 2017/3/21.
+ * Created by Javen on 2017/3/21.
  */
 
 public class MoreDetailsActivity extends BaseActivity {
@@ -37,9 +38,9 @@ public class MoreDetailsActivity extends BaseActivity {
     }
 
     private void initView() {
-        moreWv = (WebView) findViewById(R.id.more_webView);
+        moreWv = (WebView) findViewById(R.id.webV_main);
         webSettings = moreWv.getSettings();
-        bar = (ProgressBar)findViewById(R.id.progressBar);
+        bar = (ProgressBar)findViewById(R.id.proBar);
 
     }
     private void initData() {
@@ -54,8 +55,8 @@ public class MoreDetailsActivity extends BaseActivity {
         moreWv.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-//                Log.d(TAG, "onProgressChanged: "+newProgress);
                 bar.setVisibility(View.VISIBLE);
+                Log.d(TAG, "onProgressChanged: "+newProgress);
                 if (newProgress == 100) {
                     bar.setVisibility(View.GONE);
 

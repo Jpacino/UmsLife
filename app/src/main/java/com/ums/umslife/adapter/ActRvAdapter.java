@@ -9,13 +9,8 @@ import com.ums.umslife.bean.ActivityBean;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.ums.umslife.R.id.tv_activity_name;
-
 /**
- * Created by wujia on 2017/3/20.
+ * Created by Javen on 2017/3/20.
  */
 
 public class ActRvAdapter extends BaseQuickAdapter<ActivityBean.DataBean.AllActivityListBean, BaseViewHolder> {
@@ -29,10 +24,10 @@ public class ActRvAdapter extends BaseQuickAdapter<ActivityBean.DataBean.AllActi
 
     @Override
     protected void convert(BaseViewHolder helper, ActivityBean.DataBean.AllActivityListBean item) {
-        helper.setText(R.id.tv_activity_name, item.getActivityTheme())
-        .setText(R.id.tv_activity_count,item.getIntegral()+"分");
-        TextView clubTv = helper.getView(R.id.tv_activity_club);
-        TextView joinStateTv = helper.getView(R.id.tv_activity_joinState);
+        helper.setText(R.id.tv_act_name, item.getActivityTheme())
+        .setText(R.id.tv_integral,item.getIntegral()+"分");
+        TextView clubTv = helper.getView(R.id.tv_club_name);
+        TextView joinStateTv = helper.getView(R.id.tv_joinState);
         if (item.getClubNo().equals("0")) {
             clubTv.setText("全体成员");
         } else {

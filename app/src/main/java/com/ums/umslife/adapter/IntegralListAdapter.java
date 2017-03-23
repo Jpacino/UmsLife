@@ -39,10 +39,10 @@ public class IntegralListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CommonViewHolder viewHolder = CommonViewHolder.createCVH(convertView,
 				parent, R.layout.item_integral_list);
-		TextView wayTv = viewHolder.getTv(R.id.way_tv);
-		TextView integralTv = viewHolder.getTv(R.id.integral_tv);
-		TextView detailsTv = viewHolder.getTv(R.id.details_tv);
-		TextView timeTv = viewHolder.getTv(R.id.time_tv);
+		TextView wayTv = viewHolder.getTv(R.id.tv_way);
+		TextView integralTv = viewHolder.getTv(R.id.tv_integral);
+		TextView detailsTv = viewHolder.getTv(R.id.tv_details);
+		TextView timeTv = viewHolder.getTv(R.id.tv_time);
 		View lineV = viewHolder.getView(R.id.view_line);
 		if (position == integralLists.size() - 1) {
 			lineV.setVisibility(View.VISIBLE);

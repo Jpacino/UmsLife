@@ -8,9 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ums.umslife.R;
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.ChangePwdBean;
 import com.ums.umslife.bean.SendMsgBean;
 import com.ums.umslife.net.HttpUtils;
@@ -19,6 +20,9 @@ import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
 import com.ums.umslife.view.SuccinctProgress;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,20 +30,29 @@ import retrofit2.Response;
 public class ChangePasswordActivity extends BaseActivity implements
         OnClickListener {
 
+    @BindView(R.id.et_new_pwd)
+    MaterialEditText etNewPwd;
+    @BindView(R.id.et_new_pwd_again)
+    MaterialEditText etNewPwdAgain;
+    @BindView(R.id.et_verification)
+    MaterialEditText etVerification;
+    @BindView(R.id.btn_send_code)
+    Button btnSendCode;
+    @BindView(R.id.btn_change_pwd)
+    Button btnChangePwd;
     private CountDownUtils2 countDown;
     private SharedPreferences loginShare;
     private String phone;
     private String user_pwd;
     private SendMsgBean sendMsgBean;
     private Context mContext;
-    private EditText pwdEt, pwdAgainEt, verCodeEt;
     private ChangePwdBean changePwdBean;
-    private Button btSendAuthCode ,changePwdBtn ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+        ButterKnife.bind(this);
         init();
         initView();
         initData();
@@ -54,15 +67,9 @@ public class ChangePasswordActivity extends BaseActivity implements
 
 
     protected void initView() {
-        btSendAuthCode = (Button) findViewById(R.id.send_code_bt);
-        changePwdBtn = (Button) findViewById(R.id.bt_change_password);
-        pwdEt = (EditText) findViewById(R.id.new_pwd_et);
-        pwdAgainEt = (EditText) findViewById(R.id.new_pwd_again_et);
-        verCodeEt = (EditText) findViewById(R.id.verification_et);
         countDown = new CountDownUtils2(ChangePasswordActivity.this,
-                btSendAuthCode);
-        btSendAuthCode.setOnClickListener(this);
-        changePwdBtn.setOnClickListener(this);
+                btnSendCode);
+
     }
 
 
@@ -72,20 +79,7 @@ public class ChangePasswordActivity extends BaseActivity implements
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.send_code_bt:
-                sendMsg();
-                break;
-            case R.id.bt_change_password:
-                changePwd();
-                break;
 
-            default:
-                break;
-        }
-    }
 
     private void sendMsg() {
         countDown.startCountDown();
@@ -100,44 +94,44 @@ public class ChangePasswordActivity extends BaseActivity implements
                         if (sendMsgBean != null) {
                             switch (sendMsgBean.getCode()) {
                                 case MyAppConfig.SUCCESS_CODE:
-                                    MyUtils.showToast(mContext,""+sendMsgBean.getReason());
+                                    MyUtils.showToast(mContext, "" + sendMsgBean.getReason());
                                     break;
                                 case MyAppConfig.DEFEAT_CODE:
-                                    MyUtils.showToast(mContext,""+sendMsgBean.getReason());
+                                    MyUtils.showToast(mContext, "" + sendMsgBean.getReason());
                                     break;
                                 default:
-                                    MyUtils.showToast(mContext,"数据异常");
+                                    MyUtils.showToast(mContext, "数据异常");
                                     break;
                             }
                         } else {
-                            MyUtils.showToast(mContext,"数据异常");
+                            MyUtils.showToast(mContext, "数据异常");
                         }
                         countDown.onDestroy();
-                        btSendAuthCode.setText("发送");
-                        btSendAuthCode.setEnabled(true);
+                        btnSendCode.setText("发送");
+                        btnSendCode.setEnabled(true);
                     }
 
                     @Override
                     public void onFailure(Call<SendMsgBean> arg0,
                                           Throwable throwable) {
                         countDown.onDestroy();
-                        btSendAuthCode.setText("发送");
-                        btSendAuthCode.setEnabled(true);
-                        MyUtils.showToast(mContext,"连接失败");
+                        btnSendCode.setText("发送");
+                        btnSendCode.setEnabled(true);
+                        MyUtils.showToast(mContext, "连接失败");
                     }
                 });
     }
 
     private void changePwd() {
-        int size = pwdEt.getText().toString().trim().length();
+        int size = etNewPwd.getText().toString().trim().length();
         if (size >= 3) {
-            if (pwdEt.getText().toString().trim()
-                    .equals(pwdAgainEt.getText().toString().trim())) {
-                if (!verCodeEt.getText().toString().isEmpty()) {
+            if (etNewPwd.getText().toString().trim()
+                    .equals(etNewPwdAgain.getText().toString().trim())) {
+                if (!etVerification.getText().toString().isEmpty()) {
                     SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                             SuccinctProgress.THEME_LINE, false, false);
-                    user_pwd = pwdEt.getText().toString().trim();
-                    String verCode = verCodeEt.getText().toString().trim();
+                    user_pwd = etNewPwd.getText().toString().trim();
+                    String verCode = etVerification.getText().toString().trim();
                     Log.d(MyAppConfig.TAG, "phone" + phone);
                     Log.d(MyAppConfig.TAG, "verCode" + verCode);
                     Log.d(MyAppConfig.TAG, "user_pwd" + user_pwd);
@@ -206,4 +200,15 @@ public class ChangePasswordActivity extends BaseActivity implements
         super.onDestroy();
     }
 
+    @OnClick({R.id.btn_send_code, R.id.btn_change_pwd})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_send_code:
+                sendMsg();
+                break;
+            case R.id.btn_change_pwd:
+                changePwd();
+                break;
+        }
+    }
 }

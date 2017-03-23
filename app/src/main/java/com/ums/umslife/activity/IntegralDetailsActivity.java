@@ -3,16 +3,17 @@ package com.ums.umslife.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ums.umslife.R;
-import com.ums.umslife.adapter.IntegralListAdapter;
+import com.ums.umslife.adapter.IntegralRvAdapter;
+import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.IntegralBean;
 import com.ums.umslife.net.HttpUtils;
 import com.ums.umslife.utils.MyAppConfig;
@@ -21,121 +22,123 @@ import com.ums.umslife.utils.MyUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IntegralDetailsActivity extends BaseActivity implements
-		OnClickListener, PullToRefreshBase.OnRefreshListener2<ListView> {
-	private Context mContext;
-	private PullToRefreshListView integralLv;
-	private IntegralListAdapter adapter;
-	private List<IntegralBean.IntegralsBean> integralLists = new ArrayList<>();
-	private String phone;
-	private TextView emptyTv;
-	private IntegralBean integralBean;
+public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.rv_integral)
+    RecyclerView rvIntegral;
+    @BindView(R.id.refresh_integral)
+    SwipeRefreshLayout refreshIntegral;
+    @BindView(R.id.tv_empty)
+    TextView tvEmpty;
+    private Context mContext;
+    private List<IntegralBean.IntegralsBean> integralLists = new ArrayList<>();
+    private String phone;
+    private IntegralBean integralBean;
+    private IntegralRvAdapter integralRvAdapter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_integral_details);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_integral_details);
+        ButterKnife.bind(this);
 
-		init();
-		initView();
-		initData();
-	}
+        init();
+        initView();
+        initData();
+    }
 
-	private void init() {
-		mContext = this;
-		setBackBtn();
-		setTitle("积分明细");
-	}
+    private void init() {
+        mContext = this;
+        setBackBtn();
+        setTitle("积分明细");
+    }
 
-	private void initView() {
-		integralLv = (PullToRefreshListView) findViewById(R.id.lv_may_act);
-		emptyTv = (TextView) findViewById(R.id.empty_tv);
-		integralLv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
-		integralLv.setOnRefreshListener(this);
-		adapter = new IntegralListAdapter(integralLists);
-		integralLv.setAdapter(adapter);
-		setEmptyView(integralLists.size(), emptyTv);
-	}
+    private void initView() {
+        tvEmpty = (TextView) findViewById(R.id.tv_empty);
+        rvIntegral = (RecyclerView) findViewById(R.id.rv_integral);
+        refreshIntegral = (SwipeRefreshLayout) findViewById(R.id.refresh_integral);
+        refreshIntegral.setColorSchemeColors(mContext.getResources().getColor(R.color.red_main));
+        integralRvAdapter = new IntegralRvAdapter(R.layout.item_integral_list, integralLists);
+        integralRvAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        rvIntegral.setLayoutManager(new LinearLayoutManager(mContext));
+        rvIntegral.setAdapter(integralRvAdapter);
+        refreshIntegral.setOnRefreshListener(this);
+        integralRvAdapter.setOnItemClickListener(this);
+        setEmptyView(integralLists.size(), tvEmpty);
+    }
 
-	private void initData() {
-		SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
-		phone = loginShare.getString("phone", "");
-		loadData();
-	}
+    private void initData() {
+        SharedPreferences loginShare = getSharedPreferences("login", Context.MODE_PRIVATE);
+        phone = loginShare.getString("phone", "");
+        loadNetData();
+    }
 
-	private void loadData() {
-		HttpUtils.init().getIntegralBean(phone)
-				.enqueue(new Callback<IntegralBean>() {
+    private void loadNetData() {
+        HttpUtils.init().getIntegralBean(phone)
+                .enqueue(new Callback<IntegralBean>() {
 
-					@Override
-					public void onResponse(Call<IntegralBean> arg0,
-										   Response<IntegralBean> response) {
-						integralBean = response.body();
-						if (integralBean != null) {
-							switch (integralBean.getCode()) {
-								case MyAppConfig.SUCCESS_CODE:
-									integralLists.clear();
-									integralLists.addAll(integralBean.getData());
-									break;
-								case MyAppConfig.DEFEAT_CODE:
-									MyUtils.showToast(mContext,"" + integralBean.getReason());
-									break;
-								default:
-									MyUtils.showToast(mContext,"数据异常");
-									break;
-							}
-						} else {
-							MyUtils.showToast(mContext,"数据异常");
-						}
+                    @Override
+                    public void onResponse(Call<IntegralBean> arg0,
+                                           Response<IntegralBean> response) {
+                        integralBean = response.body();
+                        if (integralBean != null) {
+                            switch (integralBean.getCode()) {
+                                case MyAppConfig.SUCCESS_CODE:
+                                    integralLists.clear();
+                                    integralLists.addAll(integralBean.getData());
+                                    break;
+                                case MyAppConfig.DEFEAT_CODE:
+                                    MyUtils.showToast(mContext, "" + integralBean.getReason());
+                                    break;
+                                default:
+                                    MyUtils.showToast(mContext, "数据异常");
+                                    break;
+                            }
+                        } else {
+                            MyUtils.showToast(mContext, "数据异常");
+                        }
 
-						adapter.notifyDataSetChanged();
-						setEmptyView(integralLists.size(), emptyTv);
-						MyUtils.complete(integralLv);
-					}
+                        integralRvAdapter.notifyDataSetChanged();
+                        setEmptyView(integralLists.size(), tvEmpty);
+                        MyUtils.complete(refreshIntegral);
+                    }
 
-					@Override
-					public void onFailure(Call<IntegralBean> arg0,
-										  Throwable throwable) {
-						Log.d(MyAppConfig.TAG, "异常" + throwable.getMessage());
-						MyUtils.showToast(mContext,"连接失败");
-						adapter.notifyDataSetChanged();
-						setEmptyView(integralLists.size(), emptyTv);
-						MyUtils.complete(integralLv);
+                    @Override
+                    public void onFailure(Call<IntegralBean> arg0,
+                                          Throwable throwable) {
+                        Log.d(MyAppConfig.TAG, "异常" + throwable.getMessage());
+                        MyUtils.showToast(mContext, "连接失败");
+                        integralRvAdapter.notifyDataSetChanged();
+                        setEmptyView(integralLists.size(), tvEmpty);
+                        MyUtils.complete(refreshIntegral);
 
-					}
-				});
+                    }
+                });
 
-	}
+    }
 
-	private void setEmptyView(int size, View v) {
-		if (size == 0) {
-			v.setVisibility(View.VISIBLE);
-		} else {
-			v.setVisibility(View.GONE);
-		}
-	}
+    private void setEmptyView(int size, View v) {
+        if (size == 0) {
+            v.setVisibility(View.VISIBLE);
+        } else {
+            v.setVisibility(View.GONE);
+        }
+    }
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
 
-	}
+    @Override
+    public void onRefresh() {
+        loadNetData();
+    }
 
-	@Override
-	public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-		loadData();
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-	}
-
-	@Override
-	public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-		// TODO Auto-generated method stub
-
-	}
-
+    }
 }

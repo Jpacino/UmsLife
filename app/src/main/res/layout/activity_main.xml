@@ -8,10 +8,10 @@
         android:id="@+id/ll_first_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/main_ll"/>
+        android:layout_above="@+id/ll_main"/>
 
     <LinearLayout
-        android:id="@id/main_ll"
+        android:id="@id/ll_main"
         android:layout_gravity="end"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:background="@color/line"/>
 
         <RadioGroup
-            android:id="@+id/rg_first_main"
+            android:id="@+id/rg_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

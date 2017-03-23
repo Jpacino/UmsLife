@@ -3,14 +3,21 @@ package com.ums.umslife.bean;
 public class MineMenuBean {
 	private int res;
 	private String name;
-	public MineMenuBean(int res, String name) {
-		super();
-		this.res = res;
-		this.name = name;
-	}
-	public MineMenuBean() {
-		super();
-	}
+	private int imgId;
+
+    public MineMenuBean(int res, String name, int imgId) {
+        this.res = res;
+        this.name = name;
+        this.imgId = imgId;
+    }
+
+    public int getImgId() {
+        return imgId;
+    }
+
+    public void setImgId(int imgId) {
+        this.imgId = imgId;
+    }
 	public int getRes() {
 		return res;
 	}
@@ -23,6 +30,6 @@ public class MineMenuBean {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 
 }

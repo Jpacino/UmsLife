@@ -3,7 +3,6 @@ package com.ums.umslife.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,19 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.ums.umslife.R;
 import com.ums.umslife.activity.ActivityDetailsActivity;
 import com.ums.umslife.adapter.ActRvAdapter;
-import com.ums.umslife.adapter.ActivityListAdapter;
+import com.ums.umslife.base.BaseFragment;
 import com.ums.umslife.bean.ActivityBean;
 import com.ums.umslife.net.HttpUtils;
 import com.ums.umslife.utils.MyAppConfig;
@@ -34,17 +28,22 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,OnBannerListener,SwipeRefreshLayout.OnRefreshListener {
+public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener, OnBannerListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String PIC_BASE_URL = "http://172.16.87.212:8080/control/picture/";
-    private TextView emptyTv;
-    private RecyclerView activityRv;
+    @BindView(R.id.rv_act)
+    RecyclerView rvAct;
+    @BindView(R.id.refresh_act)
+    SwipeRefreshLayout refreshAct;
+    @BindView(R.id.tv_empty)
+    TextView tvEmpty;
     private Context mContext;
     private ActRvAdapter actRvAdapter;
     private ActivityBean activityBean;
@@ -53,9 +52,6 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
     private List<String> titles = new ArrayList<>();
     private List<ActivityBean.DataBean.AllActivityListBean> activityLists = new ArrayList<>();
     private List<ActivityBean.DataBean.HotActivityListBean> hotActLists = new ArrayList<>();
-    public static final int MIN_CLICK_DELAY_TIME = 1000;
-    private long lastClickTime = 0;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected int getContentLayoutRes() {
@@ -65,7 +61,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
     @Override
     public void onStart() {
         super.onStart();
-        loadData();
+        loadNetData();
     }
 
     @Override
@@ -76,22 +72,20 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
 
     @Override
     protected void initView(View childView) {
+        ButterKnife.bind(this, childView);
         mContext = getActivity();
-        emptyTv = (TextView) childView.findViewById(R.id.empty_tv);
-        View headView = LayoutInflater.from(mContext).inflate(R.layout.act_headview,null);
-        banner = (Banner) headView.findViewById(R.id.act_banner);
-        swipeRefreshLayout = (SwipeRefreshLayout) childView.findViewById(R.id.act_refresh);
-        activityRv = (RecyclerView) childView.findViewById(R.id.activity_rv);
-        actRvAdapter = new ActRvAdapter(R.layout.item_activity_list,activityLists);
+        View headView = LayoutInflater.from(mContext).inflate(R.layout.head_view_act, null);
+        banner = (Banner) headView.findViewById(R.id.banner_act);
+        actRvAdapter = new ActRvAdapter(R.layout.item_activity_list, activityLists);
         actRvAdapter.addHeaderView(headView);
         actRvAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeColors(mContext.getResources().getColor(R.color.red_main));
+        refreshAct.setColorSchemeColors(mContext.getResources().getColor(R.color.red_main));
+        rvAct.setLayoutManager(new LinearLayoutManager(mContext));
+        rvAct.setAdapter(actRvAdapter);
         actRvAdapter.setOnItemClickListener(this);
-        activityRv.setLayoutManager(new LinearLayoutManager(mContext));
-        activityRv.setAdapter(actRvAdapter);
+        refreshAct.setOnRefreshListener(this);
         banner.setOnBannerListener(this);
-        setEmptyView(activityLists.size(), emptyTv);
+        setEmptyView(activityLists.size(), tvEmpty);
     }
 
     private void initBanner() {
@@ -99,7 +93,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
         imgs.clear();
         titles.clear();
         for (int i = 0; i < hotActLists.size(); i++) {
-            imgs.add(PIC_BASE_URL+hotActLists.get(i).getPicURL());
+            imgs.add(PIC_BASE_URL + hotActLists.get(i).getPicURL());
             titles.add(activityLists.get(i).getActivityTheme());
         }
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
@@ -111,7 +105,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
     /**
      * 加载网络数据
      */
-    private void loadData() {
+    private void loadNetData() {
         SharedPreferences loginShare = mContext.getSharedPreferences("login",
                 Context.MODE_PRIVATE);
         String phone = loginShare.getString("phone", "");
@@ -147,8 +141,8 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
                         }
                         actRvAdapter.notifyDataSetChanged();
 //                        swipeRefreshLayout.setRefreshing(false);
-                        setEmptyView(activityLists.size(), emptyTv);
-                        MyUtils.complete1(swipeRefreshLayout);
+                        setEmptyView(activityLists.size(), tvEmpty);
+                        MyUtils.complete(refreshAct);
                     }
 
                     @Override
@@ -158,8 +152,8 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
                         MyUtils.showToast(mContext,
                                 "连接失败");
                         actRvAdapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                        setEmptyView(activityLists.size(), emptyTv);
+                        refreshAct.setRefreshing(false);
+                        setEmptyView(activityLists.size(), tvEmpty);
 //                        MyUtils.complete(activityLv);
 
                     }
@@ -180,25 +174,32 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
     }
 
 
-
-
     @Override
     public void OnBannerClick(int position) {
-        MyUtils.showToast(mContext,"点击了"+position);
+        Intent actDetailIt = new Intent(mContext,
+                ActivityDetailsActivity.class);
+        actDetailIt.putExtra("code", MyAppConfig.HOT_ACT_CODE);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("hotActListBean", activityBean.getData().getHotActivityList().get(position));
+        actDetailIt.putExtras(bundle);
+        startActivity(actDetailIt);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent actDetailIt = new Intent(mContext,
                 ActivityDetailsActivity.class);
+        actDetailIt.putExtra("code", MyAppConfig.ALL_ACT_CODE);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("activitysBean", activityBean.getData().getAllActivityList().get(position));
+        bundle.putSerializable("allActListBean", activityBean.getData().getAllActivityList().get(position));
         actDetailIt.putExtras(bundle);
         startActivity(actDetailIt);
     }
 
     @Override
     public void onRefresh() {
-        loadData();
+        loadNetData();
     }
+
+
 }

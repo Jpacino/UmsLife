@@ -3,8 +3,10 @@ package com.ums.umslife.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.ums.umslife.R;
 import com.ums.umslife.bean.MineMenuBean;
 import com.ums.umslife.utils.CommonViewHolder;
@@ -39,8 +41,10 @@ public class MineListMenuAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CommonViewHolder viewHolder = CommonViewHolder.createCVH(convertView, parent, R.layout.item_mine_menu);
 		TextView tv = viewHolder.getTv(R.id.tv_menu_name);
+		ImageView iv = viewHolder.getIv(R.id.iv_mine_icon);
 		MineMenuBean mineMenuBean = itemLists.get(position);
 		tv.setText(mineMenuBean.getName()+"");
+		iv.setImageResource(itemLists.get(position).getImgId());
 		return viewHolder.convertView;
 	}
 
