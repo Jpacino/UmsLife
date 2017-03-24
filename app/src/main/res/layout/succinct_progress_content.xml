@@ -19,7 +19,6 @@
         android:layout_below="@id/iv_progress_icon"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
-        android:text="@string/hello_world"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -42,8 +43,8 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
     RecyclerView rvAct;
     @BindView(R.id.refresh_act)
     SwipeRefreshLayout refreshAct;
-    @BindView(R.id.tv_empty)
-    TextView tvEmpty;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
     private Context mContext;
     private ActRvAdapter actRvAdapter;
     private ActivityBean activityBean;
@@ -85,7 +86,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
         actRvAdapter.setOnItemClickListener(this);
         refreshAct.setOnRefreshListener(this);
         banner.setOnBannerListener(this);
-        setEmptyView(activityLists.size(), tvEmpty);
+        setEmptyView(activityLists.size(), llEmpty);
     }
 
     private void initBanner() {
@@ -141,7 +142,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
                         }
                         actRvAdapter.notifyDataSetChanged();
 //                        swipeRefreshLayout.setRefreshing(false);
-                        setEmptyView(activityLists.size(), tvEmpty);
+                        setEmptyView(activityLists.size(), llEmpty);
                         MyUtils.complete(refreshAct);
                     }
 
@@ -153,7 +154,7 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
                                 "连接失败");
                         actRvAdapter.notifyDataSetChanged();
                         refreshAct.setRefreshing(false);
-                        setEmptyView(activityLists.size(), tvEmpty);
+                        setEmptyView(activityLists.size(), llEmpty);
 //                        MyUtils.complete(activityLv);
 
                     }

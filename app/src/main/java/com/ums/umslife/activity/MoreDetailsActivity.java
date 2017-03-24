@@ -1,5 +1,6 @@
 package com.ums.umslife.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,7 +22,8 @@ import com.ums.umslife.R;
 public class MoreDetailsActivity extends BaseActivity {
     private WebView moreWv;
     private WebSettings webSettings;
-    private static  final  String URL = "http://172.16.87.212:8080/control/act/activityNote.do?activityNo=6";
+    private String activityNo = "";
+    private static  final  String URL = "http://172.16.87.212:8080/control/act/activityNote.do?activityNo=";
     private static  final  String URL2 ="http://www.baidu.com";
     private  ProgressBar bar;
     @Override
@@ -35,6 +37,8 @@ public class MoreDetailsActivity extends BaseActivity {
     private void init() {
         setBackBtn();
         setTitle("注意事项");
+        Intent moreDetailsIt = getIntent();
+        activityNo = moreDetailsIt.getStringExtra("activityNo");
     }
 
     private void initView() {
@@ -45,7 +49,11 @@ public class MoreDetailsActivity extends BaseActivity {
     }
     private void initData() {
         webSettings.setDomStorageEnabled(true);
-        moreWv.loadUrl(URL);
+        webSettings.setSupportZoom(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        moreWv.loadUrl(URL+activityNo);
+        Log.d(TAG, "============="+URL+activityNo);
         moreWv.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

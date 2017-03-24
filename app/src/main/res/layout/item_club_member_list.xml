@@ -22,8 +22,7 @@
         <TextView
             android:id="@+id/tv_member_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="姓名" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_member_phone"
@@ -31,8 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_3_dip"
             android:textSize="12sp"
-            android:textColor="@color/gray_txt"
-            android:text="电话" />
+            android:textColor="@color/gray_txt" />
     </LinearLayout>
 
 </LinearLayout>

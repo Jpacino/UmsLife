@@ -69,11 +69,6 @@ public class MainActivity extends BaseActivity
             Fragment fragment = mFragments.get(index);
             ctrlFragment(fragment);
             setTitle(titles.get(index));
-            if (index ==2 ){
-                hideToolbar();
-            }else {
-                showToolbar();
-            }
         }
     };
 

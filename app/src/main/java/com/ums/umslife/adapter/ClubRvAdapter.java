@@ -29,8 +29,7 @@ public class ClubRvAdapter extends BaseQuickAdapter<ClubBean.ClubsBean,BaseViewH
                 .setText(R.id.tv_member,item.getMember());
         TextView stateTv = helper.getView(R.id.tv_joinState);
         if (item.getApplyState().isEmpty()) {
-            stateTv.setText("未加入");
-            stateTv.setTextColor(mContext.getResources().getColor(R.color.red_txt));
+            stateTv.setText("");
         }else if (item.getApplyState().equals(IS_JOIN)) {
             stateTv.setText("已加入");
             stateTv.setTextColor(mContext.getResources().getColor(R.color.green_txt));

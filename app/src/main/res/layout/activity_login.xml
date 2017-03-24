@@ -34,14 +34,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:hint="请输入手机号"
+                android:hint="@string/please_input_phone"
                 android:inputType="phone"
                 android:lines="1"
                 android:maxLength="11"
                 android:textSize="@dimen/dimen_12_dip"
                 app:met_clearButton="true"
                 app:met_floatingLabel="highlight"
-                app:met_floatingLabelText="手机号"
+                app:met_floatingLabelText="@string/phone"
                 app:met_hideUnderline="true"
                 app:met_iconLeft="@drawable/ic_login_account"
                 app:met_primaryColor="@color/red_main" />
@@ -66,13 +66,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/bt_send_auth_code"
-                android:hint="请输入密码"
+                android:hint="@string/please_input_pwd"
                 android:inputType="textPassword"
                 android:lines="1"
                 android:textSize="@dimen/dimen_12_dip"
                 app:met_clearButton="true"
                 app:met_floatingLabel="highlight"
-                app:met_floatingLabelText="密码"
+                app:met_floatingLabelText="@string/hint_pwd"
                 app:met_hideUnderline="true"
                 app:met_iconLeft="@drawable/ic_login_password"
                 app:met_primaryColor="@color/red_main" />
@@ -85,7 +85,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/bt_count_down_bg_selector"
-                android:text="@string/send_auth_code"
+                android:text="@string/send"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen_10_dip"
                 android:visibility="gone" />
@@ -154,9 +154,9 @@
         android:id="@id/forget_pwd_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray_txt"
+        android:textColor="@color/red_main"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="@dimen/dimen_10_dip"
-        android:text="忘记密码?"/>
+        android:text="@string/forget_pwd"/>
 </RelativeLayout>

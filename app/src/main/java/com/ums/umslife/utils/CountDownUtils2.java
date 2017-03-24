@@ -28,7 +28,7 @@ public class CountDownUtils2 {
 				break;
 			case COUNT_DOWN_FINISH:
 				btSendAuthCode.setText(context.getResources().getString(
-						R.string.send_auth_code));
+						R.string.send));
 				btSendAuthCode.setEnabled(true);
 				break;
 

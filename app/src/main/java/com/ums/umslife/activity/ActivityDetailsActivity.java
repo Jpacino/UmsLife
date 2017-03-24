@@ -26,7 +26,7 @@ import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.ums.umslife.R;
 import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.ActivityApplyBean;
@@ -197,7 +197,7 @@ public class ActivityDetailsActivity extends BaseActivity {
      * 初始化状态
      */
     private void initState() {
-        Picasso.with(mContext).load(picUrl).error(R.drawable.bg_error_img).into(ivTitle);
+        Glide.with(mContext).load(picUrl).error(R.drawable.bg_error_img).into(ivTitle);
         if (!actLatLngStr.isEmpty()) {
             try {
                 actLat = Double.valueOf(actLatLngStr.substring(0, actLatLngStr.indexOf(",")));
@@ -300,7 +300,7 @@ public class ActivityDetailsActivity extends BaseActivity {
 //                .radio()
 //                .crop()
                 .multiple()
-                .imageLoader(ImageLoaderType.PICASSO)
+                .imageLoader(ImageLoaderType.GLIDE)
                 .subscribe(new RxBusResultSubscriber<ImageMultipleResultEvent>() {
                     @Override
                     protected void onEvent(ImageMultipleResultEvent imageMultipleResultEvent) {
@@ -308,6 +308,7 @@ public class ActivityDetailsActivity extends BaseActivity {
                         try {
                             String originalPath = imageMultipleResultEvent.getResult().get(0).getOriginalPath();
                             String smallPath = PictureUtil.bitmapToPath(originalPath);
+                            Log.d(TAG, "onEvent: ==========" + smallPath);
                             file = new File(smallPath);
                         } catch (Exception e) {
                             Log.d(TAG, "onEvent: " + e.getMessage());
@@ -632,7 +633,9 @@ public class ActivityDetailsActivity extends BaseActivity {
                 upload();
                 break;
             case R.id.ll_more:
-                MyUtils.startAct(mContext, MoreDetailsActivity.class);
+                Intent moreDetailIt = new Intent(mContext, MoreDetailsActivity.class);
+                moreDetailIt.putExtra("activityNo", activityNo);
+                startActivity(moreDetailIt);
                 break;
         }
     }

@@ -43,7 +43,7 @@
                     android:id="@+id/tv_club_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="俱乐部名称"
+                    android:text="@string/club_name"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -57,7 +57,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:text="简介"
                     android:textColor="@color/gray_txt"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -70,7 +69,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="成员"
+                    android:text="@string/member"
                     android:textColor="@color/gray_txt"
                     android:textSize="12sp" />
 
@@ -78,7 +77,6 @@
                     android:id="@+id/tv_member"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="55"
                     android:textColor="@color/green_color"
                     android:textSize="@dimen/dimen_12_dip" />
             </LinearLayout>
@@ -91,8 +89,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_5_dip"
-            android:text="未加入"
-            android:textColor="@color/red_txt"
             android:textSize="16sp" />
     </RelativeLayout>
 

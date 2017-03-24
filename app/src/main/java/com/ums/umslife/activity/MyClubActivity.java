@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -34,8 +35,8 @@ public class MyClubActivity extends BaseActivity implements BaseQuickAdapter.OnI
     RecyclerView rvClub;
     @BindView(R.id.refresh_club)
     SwipeRefreshLayout refreshClub;
-    @BindView(R.id.tv_empty)
-    TextView tvEmpty;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
     private Context mContext;
     private List<ClubBean.ClubsBean> clubLists = new ArrayList<>();
     private String phone;
@@ -69,7 +70,7 @@ public class MyClubActivity extends BaseActivity implements BaseQuickAdapter.OnI
         rvClub.setAdapter(clubRvAdapter);
         refreshClub.setOnRefreshListener(this);
         clubRvAdapter.setOnItemClickListener(this);
-        setEmptyView(clubLists.size(), tvEmpty);
+        setEmptyView(clubLists.size(), llEmpty);
     }
 
 
@@ -106,7 +107,7 @@ public class MyClubActivity extends BaseActivity implements BaseQuickAdapter.OnI
                         }
 
                         clubRvAdapter.notifyDataSetChanged();
-                        setEmptyView(clubLists.size(), tvEmpty);
+                        setEmptyView(clubLists.size(), llEmpty);
                         // SuccinctProgress.dismiss();
                         MyUtils.complete(refreshClub);
 
@@ -118,7 +119,7 @@ public class MyClubActivity extends BaseActivity implements BaseQuickAdapter.OnI
                         Log.d(MyAppConfig.TAG, "异常" + throwable.getMessage());
                         MyUtils.showToast(mContext, "连接失败");
                         clubRvAdapter.notifyDataSetChanged();
-                        setEmptyView(clubLists.size(), tvEmpty);
+                        setEmptyView(clubLists.size(), llEmpty);
                         MyUtils.complete(refreshClub);
 
                     }

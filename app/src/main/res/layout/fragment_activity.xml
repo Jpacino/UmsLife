@@ -17,13 +17,26 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <TextView
-        android:id="@+id/tv_empty"
+    <LinearLayout
+        android:id="@+id/ll_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="暂无数据"
-        android:textColor="@color/gray_txt"
-        />
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="@dimen/dimen_50_dip"
+            android:layout_height="@dimen/dimen_50_dip"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/img_no_data"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen_10_dip"
+            android:text="@string/no_data"
+            android:textColor="@color/red_main" />
+    </LinearLayout>
 
 </RelativeLayout>

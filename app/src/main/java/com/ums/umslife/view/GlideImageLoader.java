@@ -3,7 +3,7 @@ package com.ums.umslife.view;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.ums.umslife.R;
 import com.youth.banner.loader.ImageLoader;
 
@@ -23,8 +23,8 @@ public class GlideImageLoader extends ImageLoader {
          */
 
 
-        //Picasso 加载图片简单用法
-        Picasso.with(context).load((String) path).placeholder(R.drawable.bg_default).error(R.drawable.bg_error_img).into(imageView);
+        //Glide 加载图片简单用法
+        Glide.with(context).load((String) path).placeholder(R.drawable.bg_default).error(R.drawable.bg_error_img).into(imageView);
 
         //用fresco加载图片简单用法，记得要写下面的createImageView方法
 //        Uri uri = Uri.parse((String) path);

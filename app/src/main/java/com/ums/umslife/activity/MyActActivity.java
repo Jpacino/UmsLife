@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -34,8 +35,8 @@ public class MyActActivity extends BaseActivity implements BaseQuickAdapter.OnIt
     RecyclerView rvMyAct;
     @BindView(R.id.refresh_act)
     SwipeRefreshLayout refreshAct;
-    @BindView(R.id.tv_empty)
-    TextView tvEmpty;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
     private Context mContext;
     private List<ActivityBean.DataBean.AllActivityListBean> activityLists = new ArrayList<>();
     private String phone;
@@ -68,8 +69,7 @@ public class MyActActivity extends BaseActivity implements BaseQuickAdapter.OnIt
         rvMyAct.setAdapter(actRvAdapter);
         actRvAdapter.setOnItemClickListener(this);
         refreshAct.setOnRefreshListener(this);
-        tvEmpty = (TextView) findViewById(R.id.tv_empty);
-        setEmptyView(activityLists.size(), tvEmpty);
+        setEmptyView(activityLists.size(), llEmpty);
     }
 
 
@@ -104,7 +104,7 @@ public class MyActActivity extends BaseActivity implements BaseQuickAdapter.OnIt
                         }
 
                         actRvAdapter.notifyDataSetChanged();
-                        setEmptyView(activityLists.size(), tvEmpty);
+                        setEmptyView(activityLists.size(), llEmpty);
                         MyUtils.complete(refreshAct);
                     }
 
@@ -115,7 +115,7 @@ public class MyActActivity extends BaseActivity implements BaseQuickAdapter.OnIt
                         MyUtils.showToast(mContext, "连接失败");
 
                         actRvAdapter.notifyDataSetChanged();
-                        setEmptyView(activityLists.size(), tvEmpty);
+                        setEmptyView(activityLists.size(), llEmpty);
                         MyUtils.complete(refreshAct);
                     }
                 });

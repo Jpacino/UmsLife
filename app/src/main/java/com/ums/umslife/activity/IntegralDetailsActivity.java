@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -33,8 +34,8 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
     RecyclerView rvIntegral;
     @BindView(R.id.refresh_integral)
     SwipeRefreshLayout refreshIntegral;
-    @BindView(R.id.tv_empty)
-    TextView tvEmpty;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
     private Context mContext;
     private List<IntegralBean.IntegralsBean> integralLists = new ArrayList<>();
     private String phone;
@@ -60,9 +61,6 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
     }
 
     private void initView() {
-        tvEmpty = (TextView) findViewById(R.id.tv_empty);
-        rvIntegral = (RecyclerView) findViewById(R.id.rv_integral);
-        refreshIntegral = (SwipeRefreshLayout) findViewById(R.id.refresh_integral);
         refreshIntegral.setColorSchemeColors(mContext.getResources().getColor(R.color.red_main));
         integralRvAdapter = new IntegralRvAdapter(R.layout.item_integral_list, integralLists);
         integralRvAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
@@ -70,7 +68,7 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
         rvIntegral.setAdapter(integralRvAdapter);
         refreshIntegral.setOnRefreshListener(this);
         integralRvAdapter.setOnItemClickListener(this);
-        setEmptyView(integralLists.size(), tvEmpty);
+        setEmptyView(integralLists.size(), llEmpty);
     }
 
     private void initData() {
@@ -105,7 +103,7 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
                         }
 
                         integralRvAdapter.notifyDataSetChanged();
-                        setEmptyView(integralLists.size(), tvEmpty);
+                        setEmptyView(integralLists.size(), llEmpty);
                         MyUtils.complete(refreshIntegral);
                     }
 
@@ -115,7 +113,7 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
                         Log.d(MyAppConfig.TAG, "异常" + throwable.getMessage());
                         MyUtils.showToast(mContext, "连接失败");
                         integralRvAdapter.notifyDataSetChanged();
-                        setEmptyView(integralLists.size(), tvEmpty);
+                        setEmptyView(integralLists.size(), llEmpty);
                         MyUtils.complete(refreshIntegral);
 
                     }

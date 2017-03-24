@@ -13,13 +13,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_30_dip"
-                android:background="@color/red_main" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -93,7 +88,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="电话："
+                            android:text="@string/mine_phone"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen_12_dip" />
 
@@ -113,7 +108,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="积分："
+                            android:text="@string/mine_points"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen_12_dip" />
 
@@ -280,7 +275,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/rl_about"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@drawable/bg_press_selector"-->
+                        <!--android:padding="@dimen/dimen_10_dip">-->
 
+                        <!--<ImageView-->
+                            <!--android:id="@+id/iv_about"-->
+                            <!--android:layout_width="@dimen/dimen_15_dip"-->
+                            <!--android:layout_height="@dimen/dimen_15_dip"-->
+                            <!--android:layout_alignParentLeft="true"-->
+                            <!--android:layout_centerVertical="true"-->
+                            <!--android:src="@drawable/ic_about" />-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_about"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="@dimen/dimen_10_dip"-->
+                            <!--android:layout_toRightOf="@+id/iv_about"-->
+                            <!--android:gravity="center_vertical"-->
+                            <!--android:text="@string/about"-->
+                            <!--android:textSize="14sp" />-->
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="@dimen/dimen_12_dip"-->
+                            <!--android:layout_height="@dimen/dimen_12_dip"-->
+                            <!--android:layout_alignParentRight="true"-->
+                            <!--android:layout_centerVertical="true"-->
+                            <!--android:src="@drawable/ic_right" />-->
+                    <!--</RelativeLayout>-->
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/line" />
                     <RelativeLayout
                         android:id="@+id/rl_change_pwd"
                         android:layout_width="match_parent"
