@@ -107,6 +107,9 @@ public interface HttpService {
     @POST("control/act/queryIntegral.do")
     Call<IntegralBean> getIntegralBean(@Query("phone") String phone);
 
+    /**
+     *  图片上传
+     */
     @Multipart
     @POST("control/member/headPic/save.do")
     Call<ActivitySignBean> upLoadPic(@Query("phone") String phone,
