@@ -79,8 +79,9 @@ public class ChangePasswordActivity extends BaseActivity implements
     }
 
 
-
-
+    /**
+     * 发送验证码
+     */
     private void sendMsg() {
         countDown.startCountDown();
         HttpUtils.init().getSendMsgBean(phone)
@@ -122,6 +123,9 @@ public class ChangePasswordActivity extends BaseActivity implements
                 });
     }
 
+    /**
+     * 开始修改密码
+     */
     private void changePwd() {
         int size = etNewPwd.getText().toString().trim().length();
         if (size >= 3) {

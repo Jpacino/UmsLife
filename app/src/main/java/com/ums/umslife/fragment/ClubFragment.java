@@ -118,6 +118,11 @@ public class ClubFragment extends BaseFragment implements BaseQuickAdapter.OnIte
                 });
     }
 
+    /**
+     * 设置空视图
+     * @param size
+     * @param v
+     */
     private void setEmptyView(int size, View v) {
         if (size == 0) {
             v.setVisibility(View.VISIBLE);

@@ -10,6 +10,9 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+/**
+ * cookie持久化
+ */
 class OkHttpUtil {
 	private static HashSet<String> cookies = new HashSet<>();
 

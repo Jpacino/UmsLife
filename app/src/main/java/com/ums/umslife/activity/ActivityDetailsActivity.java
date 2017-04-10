@@ -33,9 +33,11 @@ import com.ums.umslife.bean.ActivityApplyBean;
 import com.ums.umslife.bean.ActivityBean;
 import com.ums.umslife.bean.ActivitySignBean;
 import com.ums.umslife.net.HttpUtils;
+import com.ums.umslife.utils.ConstUtils;
 import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
 import com.ums.umslife.utils.PictureUtil;
+import com.ums.umslife.utils.TimeUtils;
 import com.ums.umslife.view.SuccinctProgress;
 
 import java.io.File;
@@ -56,6 +58,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.baidu.location.h.j.aa;
+import static com.baidu.location.h.j.f;
 import static com.ums.umslife.fragment.ActivityFragment.PIC_BASE_URL;
 
 public class ActivityDetailsActivity extends BaseActivity {
@@ -197,6 +201,8 @@ public class ActivityDetailsActivity extends BaseActivity {
      * 初始化状态
      */
     private void initState() {
+        Long nowTime = TimeUtils.getNowTimeMills();
+        Long endTime = TimeUtils.string2Millis(signEndTime);
         Glide.with(mContext).load(picUrl).error(R.drawable.bg_error_img).into(ivTitle);
         if (!actLatLngStr.isEmpty()) {
             try {
@@ -233,7 +239,12 @@ public class ActivityDetailsActivity extends BaseActivity {
         if (joinState.isEmpty()) {
             applyState = "0";
             tvApply.setText("报名");
+            if (nowTime > endTime){
+                tvApply.setEnabled(false);
+            }else {
+
             tvApply.setEnabled(true);
+            }
             tvSign.setText("签到");
             tvSign.setEnabled(false);
             tvUpload.setEnabled(false);
@@ -254,6 +265,9 @@ public class ActivityDetailsActivity extends BaseActivity {
 
     }
 
+    /**
+     * 初始化百度定位
+     */
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
@@ -294,6 +308,9 @@ public class ActivityDetailsActivity extends BaseActivity {
     }
 
 
+    /**
+     * 开始上传图片
+     */
     private void upload() {
         RxGalleryFinal.with(mContext)
                 .image()
@@ -306,7 +323,9 @@ public class ActivityDetailsActivity extends BaseActivity {
                     protected void onEvent(ImageMultipleResultEvent imageMultipleResultEvent) {
                         File file = null;
                         try {
+                            //获取选中图片地址
                             String originalPath = imageMultipleResultEvent.getResult().get(0).getOriginalPath();
+                            //获取压缩图片地址
                             String smallPath = PictureUtil.bitmapToPath(originalPath);
                             Log.d(TAG, "onEvent: ==========" + smallPath);
                             file = new File(smallPath);
@@ -326,7 +345,6 @@ public class ActivityDetailsActivity extends BaseActivity {
                                     if (signBean != null) {
                                         switch (signBean.getCode()) {
                                             case MyAppConfig.SUCCESS_CODE:
-
                                                 MyUtils.showToast(mContext,
                                                         "" + signBean.getReason());
                                                 break;
@@ -366,7 +384,7 @@ public class ActivityDetailsActivity extends BaseActivity {
     }
 
     /**
-     * 百度定位
+     * 开始百度定位
      */
     private void location() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
@@ -407,6 +425,9 @@ public class ActivityDetailsActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 开始报名
+     */
     private void apply() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
@@ -458,6 +479,9 @@ public class ActivityDetailsActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 开始签到
+     */
     private void sign() {
         Log.d(MyAppConfig.TAG, "phone" + phone + "activityNo" + activityNo
                 + "integral" + integral);
@@ -505,6 +529,9 @@ public class ActivityDetailsActivity extends BaseActivity {
     }
 
 
+    /**
+     * @param location 定位结果
+     */
     private void checkResult(BDLocation location) {
         String result = "";
         //获取定位结果
@@ -593,7 +620,7 @@ public class ActivityDetailsActivity extends BaseActivity {
                 sb.append(p.getId()).append(" ").append(p.getName()).append(" ").append(p.getRank());
             }
         }
-        mLocationClient.stop();
+        mLocationClient.stop();//定位成功是停止定位，以防重复定位消耗性能
         LatLng LocLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         Double distance = DistanceUtil.getDistance(actLatLng, LocLatLng);
         Log.d(MyAppConfig.TAG, "距离: " + distance + (distance < MAX_DISTANCE));
@@ -641,7 +668,7 @@ public class ActivityDetailsActivity extends BaseActivity {
     }
 
 
-    public class MyLocationListener implements BDLocationListener {
+    private class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -660,6 +687,6 @@ public class ActivityDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mLocationClient.stop();
+        mLocationClient.stop();//Activity销毁时停止定位
     }
 }

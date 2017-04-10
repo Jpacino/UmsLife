@@ -89,6 +89,9 @@ public class ActivityFragment extends BaseFragment implements BaseQuickAdapter.O
         setEmptyView(activityLists.size(), llEmpty);
     }
 
+    /**
+     * 初始化轮播图
+     */
     private void initBanner() {
         banner.setImageLoader(new GlideImageLoader());
         imgs.clear();

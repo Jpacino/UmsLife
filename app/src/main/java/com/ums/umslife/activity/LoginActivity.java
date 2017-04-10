@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.ums.umslife.R;
-import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.bean.LoginResponseBean;
 import com.ums.umslife.bean.SendMsgBean;
 import com.ums.umslife.net.HttpUtils;
@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.et_account)
     MaterialEditText etAccount;
     @BindView(R.id.et_pwd)
@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.ll_auto_login)
     LinearLayout llAutoLogin;
     private CountDownUtils countDownUtils;
-    private boolean isOpen = false, isAuto;
+    private boolean isOpen = false, isAuto;//isOpen：是开启验证码登录，isAuto：是为自动登录
     private SharedPreferences loginShare;
     private SharedPreferences autoShare;
     private String phone = "", user_pwd = "";
@@ -66,7 +66,6 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
         init();
         initView();
         initData();
@@ -76,11 +75,11 @@ public class LoginActivity extends BaseActivity {
     protected void init() {
         mContext = LoginActivity.this;
         loginIt = getIntent();
-        hideToolbar();
     }
 
 
     protected void initView() {
+        ButterKnife.bind(this);
     }
 
 

@@ -77,6 +77,9 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
         loadNetData();
     }
 
+    /**
+     * 加载网络数据
+     */
     private void loadNetData() {
         HttpUtils.init().getIntegralBean(phone)
                 .enqueue(new Callback<IntegralBean>() {
@@ -121,6 +124,12 @@ public class IntegralDetailsActivity extends BaseActivity implements BaseQuickAd
 
     }
 
+    /**
+     * @param size 列表数目
+     * @param v 展示的视图
+     *
+     *          设置空数据时的视图
+     */
     private void setEmptyView(int size, View v) {
         if (size == 0) {
             v.setVisibility(View.VISIBLE);

@@ -113,6 +113,9 @@ public class MineFragment extends BaseFragment {
     }
 
 
+    /**
+     * 注销
+     */
     private void logout() {
         getActivity().finish();
         Intent loginIt = new Intent(mContext, LoginActivity.class);
@@ -122,6 +125,9 @@ public class MineFragment extends BaseFragment {
     }
 
 
+    /**
+     * 注销dialog提示
+     */
         private void showDialog() {
             Builder builder = new Builder(mContext);
             builder.setMessage("确认退出吗？");

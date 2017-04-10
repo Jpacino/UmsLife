@@ -22,7 +22,11 @@ public class HttpUtils {
         }
         return httpService;
     }
-    
+
+    /**
+     * retrofit日志拦截器
+     * @return
+     */
     private static OkHttpClient getOkHttpClient() {
         //日志显示级别
         HttpLoggingInterceptor.Level level= HttpLoggingInterceptor.Level.BODY;

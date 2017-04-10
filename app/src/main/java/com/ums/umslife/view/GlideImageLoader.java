@@ -9,6 +9,7 @@ import com.youth.banner.loader.ImageLoader;
 
 /**
  * Created by Javen on 2017/3/3.
+ * 加载轮播图图片
  */
 
 public class GlideImageLoader extends ImageLoader {
@@ -24,6 +25,7 @@ public class GlideImageLoader extends ImageLoader {
 
 
         //Glide 加载图片简单用法
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         Glide.with(context).load((String) path).placeholder(R.drawable.bg_default).error(R.drawable.bg_error_img).into(imageView);
 
         //用fresco加载图片简单用法，记得要写下面的createImageView方法

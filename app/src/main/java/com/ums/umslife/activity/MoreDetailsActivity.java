@@ -52,6 +52,7 @@ public class MoreDetailsActivity extends BaseActivity {
         webSettings.setSupportZoom(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
+        webSettings.setJavaScriptEnabled(true);
         moreWv.loadUrl(URL+activityNo);
         Log.d(TAG, "============="+URL+activityNo);
         moreWv.setWebViewClient(new WebViewClient(){

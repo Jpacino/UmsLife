@@ -93,6 +93,9 @@ public class ClubDetailsActivity extends BaseActivity{
 
     }
 
+    /**
+     * 加载网络数据
+     */
     private void loadNetData() {
         HttpUtils.init().getClubDetailBean(phone, clubNo)
                 .enqueue(new Callback<ClubDetailBean>() {
@@ -134,6 +137,9 @@ public class ClubDetailsActivity extends BaseActivity{
     }
 
 
+    /**
+     * 初始化状态
+     */
     private void initState() {
         if (applyState.isEmpty()) {
             applyState_out = "0";
@@ -159,6 +165,9 @@ public class ClubDetailsActivity extends BaseActivity{
     }
 
 
+    /**
+     * 开始报名
+     */
     private void apply() {
         SuccinctProgress.showSuccinctProgress(mContext, "请稍后...",
                 SuccinctProgress.THEME_LINE, false, false);
