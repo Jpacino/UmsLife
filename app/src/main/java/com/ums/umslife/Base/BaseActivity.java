@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.ums.umslife.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
     private TextView title;
     private ImageView back;
     protected final String TAG = "androidjj";
@@ -28,22 +29,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         // 这句很关键，注意是调用父类的方法
         super.setContentView(R.layout.activity_base);
         // 经测试在代码里直接声明透明状态栏更有效
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
 //            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+////            window.setStatusBarColor(Color.TRANSPARENT);
 //        }
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
-            window.setNavigationBarColor(Color.TRANSPARENT);
-            initToolbar();
         }
+        //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //            Window window = getWindow();
+        //            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+        //                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        //            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        //                    /*| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION*/
+        //                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        //            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //            window.setStatusBarColor(Color.TRANSPARENT);
+        //            window.setNavigationBarColor(Color.TRANSPARENT);
+        //            initToolbar();
+        //        }
     }
 
     /**
@@ -51,7 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *            设置标题
      */
     protected void setTitle(String msg) {
-        if (title != null) {
+        if(title != null) {
             title.setText(msg);
         }
     }
@@ -60,7 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 设置点击finish
      */
     protected void setBackBtn() {
-        if (back != null) {
+        if(back != null) {
             back.setVisibility(View.VISIBLE);
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *          设置返回按钮监听
      */
     protected void setBackClickListener(View.OnClickListener l) {
-        if (back != null) {
+        if(back != null) {
             back.setVisibility(View.VISIBLE);
             back.setOnClickListener(l);
         }
@@ -89,10 +97,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if(toolbar != null) {
             setSupportActionBar(toolbar);
         }
-        if (getSupportActionBar() != null) {
+        if(getSupportActionBar() != null) {
             // Enable the Up button
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -107,17 +115,18 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void hideToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if(toolbar != null) {
             toolbar.setVisibility(View.GONE);
         }
 
     }
+
     /**
      * 显示ToolBar
      */
     protected void showToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if(toolbar != null) {
             toolbar.setVisibility(View.VISIBLE);
         }
 
@@ -131,8 +140,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(View view) {
         rootLayout = (LinearLayout) findViewById(R.id.root_layout);
-        if (rootLayout == null) return;
-        rootLayout.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if(rootLayout == null) return;
+        rootLayout.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams
+                .MATCH_PARENT));
         initToolbar();
     }
 

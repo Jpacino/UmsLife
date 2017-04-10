@@ -33,7 +33,6 @@ import com.ums.umslife.bean.ActivityApplyBean;
 import com.ums.umslife.bean.ActivityBean;
 import com.ums.umslife.bean.ActivitySignBean;
 import com.ums.umslife.net.HttpUtils;
-import com.ums.umslife.utils.ConstUtils;
 import com.ums.umslife.utils.MyAppConfig;
 import com.ums.umslife.utils.MyUtils;
 import com.ums.umslife.utils.PictureUtil;
@@ -57,9 +56,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.baidu.location.h.j.aa;
-import static com.baidu.location.h.j.f;
 import static com.ums.umslife.fragment.ActivityFragment.PIC_BASE_URL;
 
 public class ActivityDetailsActivity extends BaseActivity {
