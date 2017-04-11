@@ -12,8 +12,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.ums.umslife.base.BaseActivity;
 import com.ums.umslife.R;
+import com.ums.umslife.base.BaseActivity;
 
 /**
  * Created by Javen on 2017/3/21.
